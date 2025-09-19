@@ -14,7 +14,7 @@
   <meta property="og:description" content="Descubre los próximos eventos en la UTP">
   <meta property="og:image" content="assets/evento-foto.jpg">
 
-  <link rel="icon" href="favicon.ico" type="image/x-icon">
+  <link rel="icon" href="utp.ico" type="image/x-icon">
 
   <style>
     body { font-family: Arial, sans-serif; margin:0; padding:0; line-height:1.6; background:#f9f9f9; }
@@ -35,11 +35,14 @@
     button { background:#004080; color:white; padding:0.6rem; border:none; border-radius:5px; cursor:pointer; }
     button:hover { background:#0066cc; }
     footer p { margin:0.3rem 0; }
+    footer a {color: white;text-decoration: none;}
+    footer a:hover {text-decoration: underline;}
+
   </style>
 </head>
 <body>
   <header>
-    <img src="assets/LogoMerkapp.png" alt="Logo UTP">
+    <img src="utp.ico" alt="Logo UTP">
     <nav>
       <a href="#academicos">Académicos</a>
       <a href="#deportivos">Deportivos</a>
@@ -50,18 +53,12 @@
 
   <main>
     <article>
-      <h1>Eventos UTP</h1>
+      <h1>Página de Eventos UTP</h1>
 
       <!-- Sección Multimedia -->
       <section aria-label="Multimedia de eventos">
         <h2>Sección Multimedia</h2>
 
-        <!-- Video local -->
-        <video controls width="600">
-          <source src="assets/evento-video.mp4" type="video/mp4">
-          <source src="assets/evento-video.webm" type="video/webm">
-          Tu navegador no soporta video en HTML5.
-        </video>
 
         <!-- Video promocional desde YouTube -->
         <figure>
@@ -102,8 +99,6 @@
           <h3>Feria Tecnológica 2025</h3>
           <p><strong>Fecha:</strong> 15 de octubre, 10:00 AM, Auditorio UTP</p>
           <p>Exposición de proyectos innovadores de estudiantes de ingeniería.</p>
-          <progress value="75" max="100">75% de cupos ocupados</progress>
-          <meter value="8.5" min="0" max="10">8.5 de 10 estrellas</meter>
         </article>
         <article>
           <h3>Conferencia de Energías Renovables</h3>
@@ -182,6 +177,12 @@
             </datalist>
           </fieldset>
 
+           <label>Progreso de inscripciones:</label>
+          <progress value="70" max="100">70%</progress>
+
+          <label>Nivel de ocupación:</label>
+          <meter value="0.6" min="0" max="1">60%</meter>
+
           <button type="submit">Registrar</button>
         </form>
       </section>
@@ -210,10 +211,16 @@
     </aside>
   </main>
 
-  <footer>
-    <p>Universidad Tecnológica de Panamá</p>
-    <p>Contacto: eventos@utp.ac.pa | Tel: +507 123-4567</p>
-    <p>Síguenos en redes sociales: Facebook | Twitter | Instagram</p>
-  </footer>
+<footer>
+  <p>Universidad Tecnológica de Panamá</p>
+  <p>Contacto: <a href="mailto:buzondesugerencias@utp.ac.pa">buzondesugerencias@utp.ac.pa</a> | Tel: (507) 560-3000</p>
+  <p>
+    Síguenos en redes sociales: 
+    <a href="https://www.facebook.com/paginautp/?locale=es_LA&_rdc=1&_rdr" target="_blank" rel="noopener">Facebook</a> | 
+    <a href="https://x.com/utppanama?ref_src=twsrc%5Egoogle%7Ctwcamp%5Eserp%7Ctwgr%5Eauthor" target="_blank" rel="noopener">Twitter (X)</a> | 
+    <a href="https://www.instagram.com/utppanama/?hl=es" target="_blank" rel="noopener">Instagram</a>
+  </p>
+</footer>
+
 </body>
 </html>
