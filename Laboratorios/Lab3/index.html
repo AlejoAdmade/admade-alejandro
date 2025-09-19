@@ -1,0 +1,198 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+
+  <title>Eventos UTP — Portal Estudiantil</title>
+  <meta name="description" content="Portal oficial de eventos UTP - Universidad Tecnológica de Panamá">
+  <meta name="keywords" content="UTP, eventos, universidad, Panamá, estudiantes">
+  <meta name="author" content="Alejandro Admade">
+
+  <meta property="og:title" content="Eventos UTP">
+  <meta property="og:description" content="Descubre los próximos eventos en la UTP">
+  <meta property="og:image" content="assets/evento-foto.jpg">
+
+  <link rel="icon" href="favicon.ico" type="image/x-icon">
+
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      line-height: 1.6;
+    }
+    header, footer {
+      background: #004080;
+      color: white;
+      padding: 1rem;
+      text-align: center;
+    }
+    nav a {
+      color: white;
+      margin: 0 10px;
+      text-decoration: none;
+    }
+    main {
+      padding: 1rem;
+    }
+    section {
+      margin-bottom: 2rem;
+    }
+    .eventos {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 1rem;
+    }
+    article {
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      padding: 1rem;
+    }
+    form {
+      max-width: 400px;
+      margin: auto;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      padding: 1rem;
+    }
+    fieldset {
+      border: 1px solid #999;
+      border-radius: 6px;
+      padding: 1rem;
+    }
+    legend {
+      font-weight: bold;
+    }
+    label {
+      display: block;
+      margin-top: 10px;
+    }
+    input, select {
+      width: 100%;
+      padding: 5px;
+      margin-top: 5px;
+    }
+    button {
+      margin-top: 15px;
+      padding: 10px;
+      width: 100%;
+      background: #004080;
+      color: white;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+    button:hover {
+      background: #0066cc;
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <h1>Eventos UTP</h1>
+    <nav>
+      <a href="#eventos">Eventos</a>
+      <a href="#multimedia">Multimedia</a>
+      <a href="#registro">Registro</a>
+    </nav>
+  </header>
+
+  <main>
+    <!-- Lista de eventos -->
+    <section id="eventos">
+      <h2>Próximos eventos</h2>
+      <div class="eventos">
+        <article>
+          <h3>Feria Tecnológica</h3>
+          <p>Exposición de proyectos innovadores de estudiantes y profesores.</p>
+        </article>
+        <article>
+          <h3>Semana Cultural</h3>
+          <p>Actividades artísticas y culturales en el campus central.</p>
+        </article>
+        <article>
+          <h3>Concurso de Programación</h3>
+          <p>Competencia interuniversitaria de algoritmos.</p>
+        </article>
+        <article>
+          <h3>Charla de Emprendimiento</h3>
+          <p>Invitados especiales comparten su experiencia creando startups.</p>
+        </article>
+        <article>
+          <h3>Jornada de Salud</h3>
+          <p>Chequeos médicos y charlas de bienestar para estudiantes.</p>
+        </article>
+      </div>
+    </section>
+
+    <!-- Sección multimedia -->
+    <section id="multimedia">
+      <h2>Galería multimedia</h2>
+      <video controls width="400">
+        <source src="assets/evento-video.mp4" type="video/mp4">
+        <source src="assets/evento-video.webm" type="video/webm">
+        Tu navegador no soporta video.
+      </video>
+
+      <audio controls>
+        <source src="assets/patria.mp3" type="audio/mpeg">
+        <source src="assets/patria.ogg" type="audio/ogg">
+        Tu navegador no soporta audio.
+      </audio>
+
+      <div>
+        <h3>Ubicación</h3>
+        <iframe 
+           src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d15761.816712795822!2d-79.54318397870324!3d9.022266749513998!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x8faca83beefa4541%3A0x66a3755d549585b5!2sUniversidad%20Tecnol%C3%B3gica%20de%20Panam%C3%A1!5e0!3m2!1ses!2spa!4v1758254216777!5m2!1ses!2spa" 
+          width="400" height="300" style="border:0;" allowfullscreen="" loading="lazy"></iframe>
+      </div>
+    </section>
+
+    <!-- Formulario de registro -->
+    <section id="registro">
+      <h2>Registro a eventos</h2>
+      <form>
+        <fieldset>
+          <legend>Datos del participante</legend>
+
+          <label for="nombre">Nombre completo:</label>
+          <input type="text" id="nombre" name="nombre" required>
+
+          <label for="cedula">Cédula:</label>
+          <input type="text" id="cedula" name="cedula" 
+                 pattern="^\d{2}-\d{3,4}-\d{4}$" 
+                 placeholder="Ej: 01-234-5678" required>
+
+          <label for="correo">Correo electrónico:</label>
+          <input type="email" id="correo" name="correo" required>
+
+          <label for="evento">Selecciona un evento:</label>
+          <select id="evento" name="evento" required>
+            <option value="">-- Selecciona --</option>
+            <option>Feria Tecnológica</option>
+            <option>Semana Cultural</option>
+            <option>Concurso de Programación</option>
+            <option>Charla de Emprendimiento</option>
+            <option>Jornada de Salud</option>
+          </select>
+
+          <label>Progreso de inscripciones:</label>
+          <progress value="70" max="100">70%</progress>
+
+          <label>Nivel de ocupación:</label>
+          <meter value="0.6" min="0" max="1">60%</meter>
+
+          <button type="submit">Enviar registro</button>
+        </fieldset>
+      </form>
+    </section>
+  </main>
+
+  <footer>
+    <p>&copy; 2025 Universidad Tecnológica de Panamá — Portal de Eventos</p>
+  </footer>
+
+</body>
+</html>
