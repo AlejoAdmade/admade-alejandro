@@ -1,0 +1,54 @@
+body {
+  background-color: lightgray;
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+}
+
+h1, h2 {
+  color: blue;
+}
+
+p {
+  color: gray;
+  font-size: 16px;
+}
+
+.subtitulo {
+  font-style: italic;
+  color: green;
+}
+
+#intro {
+  background-color: yellow;
+  padding: 15px;
+}
+
+.tarjeta {
+  border: 2px solid gray;
+  padding: 20px;
+  margin: 20px 0;
+  /* background: white; */
+  /* border-radius: 10px; */
+}
+
+button {
+  background-color: blue;
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 16px;
+}
+
+button:hover {
+  background-color: darkblue;
+}
+
+footer {
+  text-align: center;
+  background-color: black;
+  color: white;
+  padding: 15px;
+}
