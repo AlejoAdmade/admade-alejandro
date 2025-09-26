@@ -1,1 +1,143 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mi Página Personal</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #fff;
+        }
+        header {
+            background-color: #f0f0f0;
+            padding: 20px 0;
+            text-align: center;
+        }
+        nav {
+            margin-top: 10px;
+        }
+        nav a {
+            margin: 0 15px;
+            text-decoration: none;
+            color: #000;
+            font-weight: bold;
+        }
+        section {
+            max-width: 1200px;
+            margin: 40px auto;
+            padding: 0 20px;
+        }
+        h2 {
+            margin-bottom: 15px;
+        }
+        img {
+            display: block;
+            margin: 20px auto;
+            max-width: 250px;
+        }
+        ul {
+            list-style-type: disc;
+            padding-left: 20px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        table, th, td {
+            border: 1px solid #ccc;
+        }
+        th, td {
+            padding: 10px;
+            text-align: left;
+        }
+        form {
+            max-width: 400px;
+            margin: 20px auto;
+        }
+        input, textarea {
+            width: 100%;
+            padding: 8px;
+            margin: 5px 0;
+            box-sizing: border-box;
+        }
+        button {
+            width: 100%;
+            padding: 10px;
+            background-color: #333;
+            color: #fff;
+            border: none;
+            cursor: pointer;
+        }
+        footer {
+            background-color: #f0f0f0;
+            text-align: center;
+            padding: 15px 0;
+            margin-top: 40px;
+        }
+    </style>
+</head>
+<body>
 
+<header>
+    <h1>Mi Página Personal con HTML</h1>
+    <nav>
+        <a href="#sobre-mi">Sobre mí</a>
+        <a href="#habilidades">Habilidades</a>
+        <a href="#proyectos">Proyectos</a>
+        <a href="#contacto">Contacto</a>
+    </nav>
+</header>
+
+<section id="sobre-mi">
+    <h2>Sobre mí</h2>
+    <p>Hola, me llamo Alejandro Admadé.</p>
+    <p>Me gusta la tecnología y aprender cosas nuevas.</p>
+    <img src="https://picsum.photos" alt="Foto en New York">
+    <p style="text-align:center;">Esta es una fotito mía en New York</p>
+</section>
+
+<section id="habilidades">
+    <h2>Habilidades</h2>
+    <ul>
+        <li>HTML</li>
+        <li>Python</li>
+        <li>CSS</li>
+    </ul>
+</section>
+
+<section id="proyectos">
+    <h2>Proyectos</h2>
+    <table>
+        <tr>
+            <th>Proyecto</th>
+            <th>Descripción</th>
+            <th>Año</th>
+        </tr>
+        <tr>
+            <td>Mi primer HTML</td>
+            <td>Página sencilla con HTML y CSS</td>
+            <td>2025</td>
+        </tr>
+    </table>
+</section>
+
+<section id="contacto">
+    <h2>Contacto</h2>
+    <form>
+        <input type="text" placeholder="Ingresa tu nombre" required>
+        <input type="email" placeholder="Ingresa tu correo" required>
+        <textarea placeholder="Deja tu mensaje" rows="4" required></textarea>
+        <button type="submit">Enviar</button>
+    </form>
+</section>
+
+<footer>
+    Mi Primera Página con HTML
+</footer>
+
+</body>
+</html>
