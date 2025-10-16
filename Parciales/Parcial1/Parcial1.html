@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Banderas de países</title>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500;700&display=swap" rel="stylesheet">
+
+<style>
+  body {
+    background-color: black;
+    color: red;
+    font-family: 'Montserrat', sans-serif;
+    text-align: center;
+  }
+
+  .contenedor {
+    border: 4px solid red;
+    border-radius: 20px;
+    width: 900px;
+    margin: 40px auto;
+    padding: 20px;
+    color: white;
+  }
+
+  h1 {
+    margin-bottom: 25px;
+  }
+
+
+  .bandera-panama {
+    border: 3px white;
+    border-radius: 15px;
+    width: 500px;
+    height: 300px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: 1fr 1fr;
+    overflow: hidden;
+  }
+
+  .panama-tl { background: white; position: relative; }
+  .panama-tr { background: red; }
+  .panama-bl  { background: blue; }
+  .panama-br  { background: white; position: relative; }
+
+  .azul-circulo, 
+  .rojo-circulo {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+  }
+
+  .azul-circulo { background: blue; }
+  .rojo-circulo { background: red; }
+
+  .nombre-grande {
+    margin-top: 10px;
+    font-weight: bold;
+    color:white;
+  }
+
+
+  .banderas-pequeñas {
+    display: flex;
+    justify-content: center;
+    gap: 40px;
+    margin-top: 30px;
+    
+  }
+
+  .bandera-caja {
+    text-align: center;
+  }
+
+  .bandera {
+    width: 150px;
+    height: 100px;
+    border-radius: 10px;
+    overflow: hidden;
+  }
+
+
+  .peru {
+    display: flex;
+  }
+
+  .peru-izquierda   { background: red; width: 33.3%; }
+  .peru-centro      { background: white;   width: 33.3%; }
+  .peru-derecha     { background: red; width: 33.3%; }
+
+
+  .ecuador {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .ecuador-arriba    { background: yellow; flex: 2; }
+  .ecuador-centro    { background: blue; flex: 1; }
+  .ecuador-abajo     { background: red; flex: 1; }
+
+
+  .bolivia {
+    display: flex;
+    flex-direction: column;
+    position: relative;
+  }
+
+  .bolivia-arriba     { background: red; flex: 1; }
+  .bolivia-centro { background: yellow; flex: 1; }
+  .bolivia-abajo    { background: green; flex: 1; }
+
+  .escudo {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 40px;
+    height: 30px;
+    background: linear-gradient(135deg,green 0 25%,yellow 25% 50%,red 50% 75%,green 75% 100%);
+    transform: translate(-50%, -50%);
+    border-radius: 5px;
+    border: 1px solid gray;
+  }
+
+  .nombre {
+    margin-top: 5px;
+    font-weight: bold;
+    color: white;
+  }
+</style>
+
+
+</head>
+
+<body>
+  <div class="contenedor">
+    <h1>Banderas de países</h1>
+    <h2>Parcial 1</h2>
+
+    <div class="bandera-panama">
+      <div class="panama-tl">
+        <div class="azul-circulo"></div>
+      </div>
+      <div class="panama-tr"></div>
+      <div class="panama-bl"></div>
+      <div class="panama-br">
+        <div class="rojo-circulo"></div>
+      </div>
+    </div>
+    <div class="nombre-grande">País #1 — Panamá</div>
+
+    <div class="banderas-pequeñas">
+
+      <div class="bandera-caja">
+        <div class="bandera peru">
+          <div class="peru-izquierda"></div>
+          <div class="peru-centro"></div>
+          <div class="peru-derecha"></div>
+        </div>
+        <div class="nombre">País #2 — Perú</div>
+      </div>
+
+      <div class="bandera-caja">
+        <div class="bandera ecuador">
+          <div class="ecuador-arriba"></div>
+          <div class="ecuador-centro"></div>
+          <div class="ecuador-abajo"></div>
+        </div>
+        <div class="nombre">País #3 — Ecuador</div>
+      </div>
+
+      <div class="bandera-caja">
+        <div class="bandera bolivia">
+          <div class="bolivia-arriba"></div>
+          <div class="bolivia-centro"></div>
+          <div class="bolivia-abajo"></div>
+          <div class="escudo"></div>
+        </div>
+        <div class="nombre">País #4 — Bolivia</div>
+      </div>
+
+    </div>
+  </div>
+</body>
+</html>
