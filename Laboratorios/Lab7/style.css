@@ -1,0 +1,166 @@
+body {
+  background-color: #0d1117;
+  color: #e6edf3;
+  font-family: "Montserrat", sans-serif;
+  margin: 0;
+  padding: 20px;
+}
+
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+h1 {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  color: #fff;
+}
+
+.count {
+  background-color: #0f3d2e;
+  color: #238636; 
+  padding: 5px 12px;
+  border-radius: 12px;
+  font-size: 0.9rem;
+  align-self: right;
+}
+
+.form-section,
+.table-section {
+  background-color: #161b22;
+  padding: 20px;
+  border-radius: 10px;
+  margin-top: 15px;
+}
+
+h2 {
+  margin-top: 0;
+  color: #fff;
+}
+
+.row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+  margin-bottom: 12px;
+}
+
+.field {
+  flex: 1 1 300px;
+  display: flex;
+  flex-direction: column;
+}
+
+.field.small {
+  flex: 1 1 120px;
+}
+
+input,
+select {
+  background-color: #0d1117;
+  color: #e6edf3;
+  border: 1px solid #30363d;
+  border-radius: 6px;
+  padding: 8px;
+  margin-top: 5px;
+}
+
+input:focus,
+select:focus {
+  outline: none;
+  border-color: #58a6ff;
+}
+
+.actions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: 10px;
+}
+
+.add {
+  background-color: #238636; 
+  color: white;
+  border: none;
+  padding: 8px 14px;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.clear {
+  background-color: #30363d;
+  color: white;
+  border: none;
+  padding: 8px 14px;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.delete-all {
+  background-color: #30363d;
+  border: none;
+  color: #fff;
+  padding: 8px 16px;
+  border-radius: 6px;
+  margin-top: 10px;
+  cursor: pointer;
+}
+
+.note {
+  color: #8b949e;
+  font-size: 0.85rem;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 10px;
+  border: 1px solid #30363d;
+  border-radius: 10px; 
+  overflow: hidden; 
+}
+
+th,
+td {
+  padding: 10px;
+  text-align: left;
+}
+
+thead {
+  background-color: #21262d;
+}
+
+tbody tr:nth-child(even) {
+  background-color: #161b22;
+}
+
+tbody tr:nth-child(odd) {
+  background-color: #0d1117;
+}
+
+button.delete {
+  background-color: #30363d;
+  color: #fff;
+  border: none;
+  padding: 6px 12px;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+button.delete:hover {
+  background-color: #238636;
+  color: #fff;
+  transition: 0.2s;
+}
+
+.empty {
+  text-align: center;
+  color: #8b949e;
+}
+
+.advice {
+  color: #8b949e;
+  font-size: 0.85rem;
+}
