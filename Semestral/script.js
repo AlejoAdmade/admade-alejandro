@@ -1,145 +1,177 @@
-(() => {
+let app = document.getElementById("app")
+let audio = document.getElementById("sonido")
+let cacheTiempo = 180000
 
-    const App = (() => {
+document.getElementById("b").onclick = buscar
+document.getElementById("tema").onclick = () => {
+  document.body.classList.toggle("dark")
+}
 
-        const html = {
-            form: document.getElementById("studentForm"),
-            limpiar: document.getElementById("limpiar"),
-            borrarTodo: document.getElementById("borrarTodo"),
-            tablaBody: document.getElementById("tablaEstudiantes").querySelector("tbody"),
-            countLabel: document.getElementById("count"),
+function getCache(k){
+  let d = localStorage.getItem(k)
+  if(!d) return null
+  d = JSON.parse(d)
+  if(Date.now() - d.t > cacheTiempo) return null
+  return d.data
+}
 
-            nombre: document.getElementById("nombre"),
-            apellido: document.getElementById("apellido"),
-            email: document.getElementById("email"),
-            edad: document.getElementById("edad"),
-            carrera: document.getElementById("carrera")
-        };
+function setCache(k, data){
+  localStorage.setItem(k, JSON.stringify({t:Date.now(), data}))
+}
 
-        let estudiantes = [];
+async function buscar(){
+  let q = document.getElementById("q").value.toLowerCase()
+  let modo = document.getElementById("modo").value
+  if(!q) return
 
-        const templates = {
-            emptyRow: () => `
-                <tr>
-                    <td colspan="7" class="empty">No hay resultados.</td>
-                </tr>
-            `,
-            row: (est, index) => `
-                <tr data-index="${index}">
-                    <td>${index + 1}</td>
-                    <td>${est.nombre}</td>
-                    <td>${est.apellido}</td>
-                    <td>${est.email}</td>
-                    <td>${est.edad}</td>
-                    <td>${est.carrera}</td>
-                    <td><button class="delete">Eliminar</button></td>
-                </tr>
-            `
-        };
+  if(modo==="pokemon"){
+    let c = getCache(q)
+    if(c){
+      pintarPokemon(c, "cache")
+      cargarEvoluciones(c.id)
+      return
+    }
 
-        const utils = {
-            validarFormulario() {
-                const nombre = html.nombre.value.trim();
-                const apellido = html.apellido.value.trim();
-                const email = html.email.value.trim();
-                const edad = parseInt(html.edad.value.trim());
-                const carrera = html.carrera.value;
+    let res = await fetch(`https://pokeapi.co/api/v2/pokemon/${q}`)
+    let data = await res.json()
+    setCache(q, data)
+    pintarPokemon(data, "api")
+    cargarEvoluciones(data.id)
+    reproducirGrito(data.cries.latest)
+  }
+}
 
-                if (!nombre || !apellido || !email || !edad || !carrera) {
-                    alert("Todos los campos son obligatorios.");
-                    return false;
-                }
-                if (!/\S+@\S+\.\S+/.test(email)) {
-                    alert("Por favor ingresa un correo válido.");
-                    return false;
-                }
-                if (edad < 18 || edad > 100) {
-                    alert("La edad debe estar entre 18 y 100 años.");
-                    return false;
-                }
+function reproducirGrito(url){
+  if(url){
+    audio.src = url
+    audio.play()
+  }
+}
 
-                return { nombre, apellido, email, edad, carrera };
-            },
+function pintarPokemon(p, origen){
+  let habilidades = p.abilities.map(a=>`
+    <span class="${a.is_hidden?"habilidad-oculta":""}">
+      ${a.ability.name}${a.is_hidden?" (Oculta)":""}
+    </span>
+  `).join("")
 
-            actualizarContador() {
-                const n = estudiantes.length;
-                html.countLabel.textContent = n === 1 ? "1 estudiante" : `${n} estudiantes`;
-            },
+  let tipos = p.types.map(t=>`<div>${t.type.name}</div>`).join("")
 
-            adjuntarEventosEliminar() {
-                const botones = html.tablaBody.querySelectorAll(".delete");
-                botones.forEach(btn =>
-                    btn.addEventListener("click", handlers.onDeleteStudent)
-                );
-            }
-        };
+  let stats = p.stats.map(s=>`
+    <div class="stat">
+      <div>${s.stat.name}</div>
+      <div class="barra">
+        <div class="relleno" style="width:${s.base_stat}%"></div>
+      </div>
+    </div>
+  `).join("")
 
-        const handlers = {
-            onSubmit(e) {
-                e.preventDefault();
-                const data = utils.validarFormulario();
-                if (!data) return;
+  app.innerHTML = `
+    <div class="card">
+      <div class="badge-data">POKEMON_DATA</div>
+      <div class="badge-origen">${origen.toUpperCase()}</div>
 
-                estudiantes.push(data);
-                render.table();
-                html.form.reset();
-            },
+      <div class="sprite-box">
+        <img src="${p.sprites.front_default}">
+      </div>
 
-            onClearForm() {
-                if (confirm("¿Deseas limpiar el formulario?")) {
-                    html.form.reset();
-                }
-            },
+      <div class="titulo">#${p.id} ${p.name.toUpperCase()}</div>
+      <div class="linea"></div>
 
-            onDeleteAll() {
-                if (estudiantes.length === 0) return;
-                if (confirm("¿Deseas eliminar todos los estudiantes?")) {
-                    estudiantes = [];
-                    render.table();
-                }
-            },
+      <div class="tipos">${tipos}</div>
+      <div class="habilidades">${habilidades}</div>
+      ${stats}
 
-            onDeleteStudent(e) {
-                const fila = e.target.closest("tr");
-                const index = parseInt(fila.dataset.index);
+      <div class="fav-btn"><button>❤️</button></div>
 
-                if (confirm("¿Deseas eliminar este estudiante?")) {
-                    estudiantes.splice(index, 1);
-                    render.table();
-                }
-            }
-        };
+      <div class="separador"></div>
+      <b>CADENA DE EVOLUCIÓN</b>
 
-        const render = {
-            table() {
-                html.tablaBody.innerHTML = "";
+      <div class="evo-root" id="evo-root"></div>
+      <div class="evos-grid" id="evos"></div>
+    </div>
+  `
+}
 
-                if (estudiantes.length === 0) {
-                    html.tablaBody.innerHTML = templates.emptyRow();
-                    utils.actualizarContador();
-                    return;
-                }
+async function cargarEvoluciones(id){
+  let s = await fetch(`https://pokeapi.co/api/v2/pokemon-species/${id}`).then(r=>r.json())
+  let e = await fetch(s.evolution_chain.url).then(r=>r.json())
 
-                estudiantes.forEach((est, index) => {
-                    html.tablaBody.innerHTML += templates.row(est, index);
-                });
+  let base = e.chain.species.name
+  let ramas = []
+  let lineal = []
 
-                utils.adjuntarEventosEliminar();
-                utils.actualizarContador();
-            }
-        };
+  function recorrer(nodo){
+    if(!nodo) return
 
-        return {
-            init() {
-                html.form.addEventListener("submit", handlers.onSubmit);
-                html.limpiar.addEventListener("click", handlers.onClearForm);
-                html.borrarTodo.addEventListener("click", handlers.onDeleteAll);
-                render.table();
-            }
-        };
+    if(nodo.evolves_to.length > 1){
+      for(let evo of nodo.evolves_to){
+        ramas.push(evo.species.name)
+      }
+    } else if(nodo.evolves_to.length === 1) {
+      let sig = nodo.evolves_to[0]
+      lineal.push(sig.species.name)
+      recorrer(sig)
+    }
+  }
 
-    })();
+  recorrer(e.chain)
 
-    App.init();
+  let baseData = await fetch(`https://pokeapi.co/api/v2/pokemon/${base}`).then(r=>r.json())
 
-})();
+  let rootHTML = ""
+  let evoHTML = ""
+
+  /* ✅ CASO 1: EVOLUCIÓN LINEAL (UNA SOLA FILA) */
+  if(ramas.length === 0){
+    rootHTML += `
+      <div class="evo-root-box" onclick="buscarDirecto('${base}')">
+        <img src="${baseData.sprites.front_default}">
+        <div>${base}</div>
+      </div>
+    `
+
+    for(let n of lineal){
+      let p = await fetch(`https://pokeapi.co/api/v2/pokemon/${n}`).then(r=>r.json())
+      rootHTML += `
+        <div class="flecha">➜</div>
+        <div class="evo" onclick="buscarDirecto('${n}')">
+          <img src="${p.sprites.front_default}">
+          <div>${n}</div>
+        </div>
+      `
+    }
+
+    document.getElementById("evo-root").innerHTML = rootHTML
+    document.getElementById("evos").innerHTML = ""
+  }
+
+  /* ✅ CASO 2: MÚLTIPLES EVOLUCIONES (EEVEE) */
+  else {
+    document.getElementById("evo-root").innerHTML = `
+      <div class="evo-root-box" onclick="buscarDirecto('${base}')">
+        <img src="${baseData.sprites.front_default}">
+        <div>${base}</div>
+      </div>
+      <div class="flecha">➜</div>
+    `
+
+    for(let n of ramas){
+      let p = await fetch(`https://pokeapi.co/api/v2/pokemon/${n}`).then(r=>r.json())
+      evoHTML += `
+        <div class="evo" onclick="buscarDirecto('${n}')">
+          <img src="${p.sprites.front_default}">
+          <div>${n}</div>
+        </div>
+      `
+    }
+
+    document.getElementById("evos").innerHTML = evoHTML
+  }
+}
+
+
+function buscarDirecto(n){
+  document.getElementById("q").value = n
+  buscar()
+}

@@ -1,84 +1,51 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Registro de Estudiantes</title>
-  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500;700&display=swap" rel="stylesheet">
+  <meta charset="UTF-8">
+  <title>Pokémon Finder</title>
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <main class="container">
-    <header class="page-header">
-      <h1>📚 Registro de Estudiantes</h1>
-      <span id="count" class="count">0 estudiantes</span>
-    </header>
 
-    <section class="form-section">
-      <h2>Nuevo estudiante</h2>
-      <form id="studentForm" novalidate>
-        <div class="row">
-          <div class="field">
-            <label for="nombre">Nombre *</label>
-            <input type="text" id="nombre" placeholder="Alejandro" required>
-          </div>
-          <div class="field">
-            <label for="apellido">Apellido *</label>
-            <input type="text" id="apellido" placeholder="Admadé" required>
-          </div>
-        </div>
+  <!-- Pokebola de fondo -->
+<div class="pokebola-contenedor">
+  <div class="pokebola">
+    <div class="pokebola-roja"></div>
+    <div class="pokebola-linea"></div>
 
-        <div class="row">
-          <div class="field">
-            <label for="email">Email *</label>
-            <input type="email" id="email" placeholder="dsv@example.com" required>
-          </div>
-          <div class="field small">
-            <label for="edad">Edad</label>
-            <input type="number" id="edad" placeholder="18" min="18" max="100" required>
-          </div>
-          <div class="field">
-            <label for="carrera">Carrera</label>
-            <select id="carrera" required>
-              <option value="">— Selecciona —</option>
-              <option>Ingeniería de Software</option>
-              <option>Desarrollo y Gestión</option>
-              <option>Ingeniería Industrial</option>
-              <option>Arquitectura</option>
-            </select>
-          </div>
-        </div>
+    <div class="pokebola-boton">
+      <div class="pokebola-punto"></div>
+    </div>
+  </div>
+</div>
 
-        <div class="actions">
-          <button type="submit" class="btn add">Agregar estudiante</button>
-          <button type="button" id="limpiar" class="btn clear">Limpiar</button>
-          <span class="note">Los campos marcados con * son obligatorios.</span>
-        </div>
-      </form>
-    </section>
 
-    <button id="borrarTodo" class="btn delete-all">Borrar todo</button>
 
-    <section class="table-section">
-      <h2>Estudiantes</h2>
-      <table id="tablaEstudiantes">
-        <thead>
-          <tr>
-            <th>#</th>
-            <th>Nombre</th>
-            <th>Apellido</th>
-            <th>Email</th>
-            <th>Edad</th>
-            <th>Carrera</th>
-            <th>Acciones</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr><td colspan="7" class="empty">No hay resultados.</td></tr>
-        </tbody>
-      </table>    
-    </section>
-  </main>
+  <header>
+    <h1 class="titulo-main">POKÉMON FINDER</h1>
+
+    <div class="menu">
+      <button>🔍 Buscar</button>
+      <button>📜 Histórico</button>
+      <button>⚔ VS</button>
+      <button>❤️ Favoritos</button>
+      <button id="tema">🌙</button>
+    </div>
+
+    <div class="buscador">
+      <select id="modo">
+        <option value="pokemon">👾 Pokémon</option>
+        <option value="habilidad">⚡️ Habilidad</option>
+      </select>
+
+      <input id="q" placeholder="Nombre o ID">
+      <button id="b">BUSCAR</button>
+    </div>
+  </header>
+
+  <main id="app"></main>
+
+  <audio id="sonido"></audio>
 
   <script src="script.js"></script>
 </body>

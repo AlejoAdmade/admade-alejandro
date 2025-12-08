@@ -1,166 +1,327 @@
 body {
-  background-color: #0d1117;
-  color: #e6edf3;
-  font-family: "Montserrat", sans-serif;
   margin: 0;
-  padding: 20px;
-}
-
-.container {
-  max-width: 1200px;
-  margin: 0 auto;
-}
-
-h1 {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  color: #fff;
-}
-
-.count {
-  background-color: #0f3d2e;
-  color: #238636; 
-  padding: 5px 12px;
-  border-radius: 12px;
-  font-size: 0.9rem;
-  align-self: right;
-}
-
-.form-section,
-.table-section {
-  background-color: #161b22;
-  padding: 20px;
-  border-radius: 10px;
-  margin-top: 15px;
-}
-
-h2 {
-  margin-top: 0;
-  color: #fff;
-}
-
-.row {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 16px;
-  margin-bottom: 12px;
-}
-
-.field {
-  flex: 1 1 300px;
-  display: flex;
-  flex-direction: column;
-}
-
-.field.small {
-  flex: 1 1 120px;
-}
-
-input,
-select {
-  background-color: #0d1117;
-  color: #e6edf3;
-  border: 1px solid #30363d;
-  border-radius: 6px;
-  padding: 8px;
-  margin-top: 5px;
-}
-
-input:focus,
-select:focus {
-  outline: none;
-  border-color: #58a6ff;
-}
-
-.actions {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  margin-top: 10px;
-}
-
-.add {
-  background-color: #238636; 
-  color: white;
-  border: none;
-  padding: 8px 14px;
-  border-radius: 6px;
-  cursor: pointer;
-}
-
-.clear {
-  background-color: #30363d;
-  color: white;
-  border: none;
-  padding: 8px 14px;
-  border-radius: 6px;
-  cursor: pointer;
-}
-
-.delete-all {
-  background-color: #30363d;
-  border: none;
-  color: #fff;
-  padding: 8px 16px;
-  border-radius: 6px;
-  margin-top: 10px;
-  cursor: pointer;
-}
-
-.note {
-  color: #8b949e;
-  font-size: 0.85rem;
-}
-
-table {
-  width: 100%;
-  border-collapse: collapse;
-  margin-top: 10px;
-  border: 1px solid #30363d;
-  border-radius: 10px; 
-  overflow: hidden; 
-}
-
-th,
-td {
-  padding: 10px;
-  text-align: left;
-}
-
-thead {
-  background-color: #21262d;
-}
-
-tbody tr:nth-child(even) {
-  background-color: #161b22;
-}
-
-tbody tr:nth-child(odd) {
-  background-color: #0d1117;
-}
-
-button.delete {
-  background-color: #30363d;
-  color: #fff;
-  border: none;
-  padding: 6px 12px;
-  border-radius: 6px;
-  cursor: pointer;
-}
-
-button.delete:hover {
-  background-color: #238636;
-  color: #fff;
-  transition: 0.2s;
-}
-
-.empty {
+  font-family: 'Courier New', monospace;
+  background:
+    radial-gradient(#999 1px, transparent 1px),
+    #e5e5e5;
+  background-size: 20px 20px;
   text-align: center;
-  color: #8b949e;
+  overflow-x: hidden;
 }
 
-.advice {
-  color: #8b949e;
-  font-size: 0.85rem;
+.dark {
+  background:
+    radial-gradient(#555 1px, transparent 1px),
+    #1e1e1e;
+  background-size: 20px 20px;
+  color: white;
+}
+
+/* ===== POKEBOLA ===== */
+
+.pokebola-contenedor {
+  position: fixed;
+  top: 220px;
+  left: 50%;
+  transform: translateX(-50%) rotate(-15deg);
+  z-index: -10;
+}
+
+.pokebola {
+  width: 580px;
+  height: 580px;
+  border-radius: 50%;
+  border: 14px solid black;
+  position: relative;
+  overflow: hidden;
+  background:
+    radial-gradient(#999 0.5px, transparent 1px),
+    white;
+  background-size: 20px 20px;
+  box-shadow: 20px 20px 0 rgba(0,0,0,0.25);
+}
+
+.pokebola-roja {
+  position: absolute;
+  width: 100%;
+  height: 50%;
+  top: 0;
+  left: 0;
+  background:
+    radial-gradient(#bdbdbd 0.5px, transparent 1px),
+    #ef5a5a;
+  background-size: 20px 20px;
+}
+
+.pokebola-linea {
+  position: absolute;
+  width: 100%;
+  height: 60px;
+  background: black;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+.pokebola-boton {
+  position: absolute;
+  width: 96px;
+  height: 96px;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  border-radius: 50%;
+  border: 10px solid black;
+  background:
+    radial-gradient(#999 0.5px, transparent 1px),
+    white;
+  background-size: 20px 20px;
+}
+
+/* ===== HEADER ===== */
+
+header {
+  padding: 25px;
+  position: relative;
+  z-index: 2;
+}
+
+.titulo-main {
+  background: #7cf0dc;
+  border: 5px solid black;
+  padding: 12px 30px;
+  display: inline-block;
+  box-shadow: 6px 6px 0 black;
+  transform: rotate(-8deg);
+  font-size: 28px;
+}
+
+/* ===== MENU ===== */
+
+.menu {
+  margin-top: 12px;
+}
+
+.menu button {
+  margin: 6px;
+  padding: 8px 18px;
+  border: 4px solid black;
+  font-size: 14px;
+  cursor: pointer;
+  box-shadow: 4px 4px 0 black;
+  background: white;
+}
+
+.menu button:hover {
+  transform: translate(2px,2px);
+  box-shadow: 2px 2px 0 black;
+}
+
+/* ===== BUSCADOR ===== */
+
+.buscador {
+  margin-top: 18px;
+}
+
+.buscador select,
+.buscador input,
+.buscador button {
+  border: 4px solid black;
+  padding: 8px 14px;
+  font-family: inherit;
+  margin: 4px;
+}
+
+.buscador select {
+  background: #ffe066;
+}
+
+.buscador input {
+  width: 200px;
+}
+
+.buscador button {
+  background: #ff6b6b;
+  cursor: pointer;
+  box-shadow: 4px 4px 0 black;
+}
+
+.buscador button:hover {
+  transform: translate(2px,2px);
+  box-shadow: 2px 2px 0 black;
+}
+
+/* ===== CONTENEDOR APP ===== */
+
+#app {
+  margin-top: 40px;
+  position: relative;
+  z-index: 2;
+}
+
+/* ===== TARJETA ===== */
+
+.card {
+  background: white;
+  border: 5px solid black;
+  width: 420px;
+  margin: 0 auto 80px;
+  padding: 15px;
+  box-shadow: 8px 8px 0 black;
+  position: relative;
+}
+
+.badge-data {
+  position: absolute;
+  top: -18px;
+  left: -4px;
+  background: black;
+  color: white;
+  padding: 4px 8px;
+  border: 3px solid black;
+}
+
+.badge-origen {
+  position: absolute;
+  top: -18px;
+  right: -4px;
+  background: #7cf0dc;
+  color: black;
+  padding: 4px 8px;
+  border: 3px solid black;
+  font-weight: bold;
+}
+
+.sprite-box {
+  border: 5px solid black;
+  background: repeating-linear-gradient(
+    45deg,
+    #eaeaea,
+    #eaeaea 10px,
+    #f5f5f5 10px,
+    #f5f5f5 20px
+  );
+  padding: 15px;
+  margin-top: 25px;
+}
+
+.sprite-box img {
+  width: 140px;
+}
+
+.titulo {
+  font-size: 24px;
+  font-weight: bold;
+  margin-top: 12px;
+}
+
+.linea {
+  height: 5px;
+  background: black;
+  margin: 8px 0;
+}
+
+/* ===== TIPOS ===== */
+
+.tipos div {
+  display: inline-block;
+  background: black;
+  color: white;
+  padding: 6px 12px;
+  margin: 4px;
+  border: 3px solid black;
+}
+
+/* ===== HABILIDADES ===== */
+
+.habilidades span {
+  display: inline-block;
+  background: #9cff57;
+  padding: 6px 12px;
+  border: 3px solid black;
+  margin: 4px;
+}
+
+.habilidad-oculta {
+  background: #ffcc00 !important;
+}
+
+/* ===== STATS ===== */
+
+.stat {
+  display: grid;
+  grid-template-columns: 120px 1fr;
+  margin: 6px 0;
+}
+
+.barra {
+  border: 3px solid black;
+  height: 14px;
+}
+
+.relleno {
+  height: 100%;
+  background: #5fdad0;
+}
+
+/* ===== FAVORITO ===== */
+
+.fav-btn button {
+  margin-top: 12px;
+  font-size: 28px;
+  background: pink;
+  border: 4px solid black;
+  cursor: pointer;
+}
+
+/* ===== SEPARADOR ===== */
+
+.separador {
+  border-top: 4px dashed black;
+  margin: 18px 0;
+}
+
+/* ===== EVOLUCIONES ===== */
+
+.evo-root {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 14px;
+  margin: 12px 0;
+}
+
+.evo-root-box {
+  border: 4px solid black;
+  padding: 10px;
+  background: #7cf0dc;
+  cursor: pointer;
+}
+
+.evo-root-box img {
+  width: 70px;
+}
+
+.flecha {
+  font-size: 28px;
+  font-weight: bold;
+}
+
+/* GRID QUE NO SE SALE DE LA TARJETA */
+.evos-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 10px;
+  max-width: 100%;
+  margin-top: 10px;
+}
+
+.evo {
+  border: 4px solid black;
+  padding: 6px;
+  background: #eaeaea;
+  cursor: pointer;
+}
+
+.evo img {
+  width: 60px;
 }
