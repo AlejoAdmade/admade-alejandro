@@ -7,46 +7,43 @@
 </head>
 <body>
 
-  <!-- Pokebola de fondo -->
+  <!-- Pokebola decorativa de fondo -->
 <div class="pokebola-contenedor">
   <div class="pokebola">
     <div class="pokebola-roja"></div>
     <div class="pokebola-linea"></div>
-
     <div class="pokebola-boton">
       <div class="pokebola-punto"></div>
     </div>
   </div>
 </div>
 
+<header>
+  <h1 class="titulo-main">POKÉMON FINDER</h1>
 
+  <div class="menu">
+    <button>🔍 Buscar</button>
+    <button>📜 Histórico</button>
+    <button>⚔ VS ⚔</button>
+    <button>❤️ Favoritos</button>
+    <button id="tema">🌙</button>
+  </div>
 
-  <header>
-    <h1 class="titulo-main">POKÉMON FINDER</h1>
+  <div class="buscador">
+    <select id="modo">
+      <option value="pokemon">👾 Pokémon</option>
+      <option value="habilidad">⚡️ Habilidad</option>
+    </select>
 
-    <div class="menu">
-      <button>🔍 Buscar</button>
-      <button>📜 Histórico</button>
-      <button>⚔ VS</button>
-      <button>❤️ Favoritos</button>
-      <button id="tema">🌙</button>
-    </div>
+    <input id="q" placeholder="Nombre o ID...">
+    <button id="b">BUSCAR</button>
+  </div>
+</header>
 
-    <div class="buscador">
-      <select id="modo">
-        <option value="pokemon">👾 Pokémon</option>
-        <option value="habilidad">⚡️ Habilidad</option>
-      </select>
+<main id="app"></main>
 
-      <input id="q" placeholder="Nombre o ID">
-      <button id="b">BUSCAR</button>
-    </div>
-  </header>
+<audio id="sonido"></audio>
 
-  <main id="app"></main>
-
-  <audio id="sonido"></audio>
-
-  <script src="script.js"></script>
+<script src="script.js"></script>
 </body>
 </html>
