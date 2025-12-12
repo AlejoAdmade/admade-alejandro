@@ -1,7 +1,7 @@
 let app = document.getElementById("app")
 let audio = document.getElementById("sonido")
 
-// ✅ Cache de 3 minutos
+// Cache de 3 minutos
 let cacheTiempo = 180000
 
 document.getElementById("b").onclick = buscar
@@ -10,7 +10,7 @@ document.getElementById("tema").onclick = () => {
 }
 
 /* ============================
-   ✅ CACHE LOCAL
+   CACHE LOCAL
 ============================ */
 
 function getCache(k){
@@ -22,14 +22,11 @@ function getCache(k){
 }
 
 function setCache(k, data){
-  localStorage.setItem(k, JSON.stringify({
-    t: Date.now(),
-    data
-  }))
+  localStorage.setItem(k, JSON.stringify({ t: Date.now(), data }))
 }
 
 /* ============================
-   ✅ BUSCAR POKEMON / HABILIDAD
+   BUSQUEDA PRINCIPAL
 ============================ */
 
 async function buscar(){
@@ -38,77 +35,76 @@ async function buscar(){
 
   if(!q) return
 
+  if(modo === "pokemon"){
+    buscarPokemon(q)
+    return
+  }
+
+  if(modo === "habilidad"){
+    buscarHabilidad(q)
+    return
+  }
+}
+
+/* ============================
+   BUSCAR POKÉMON
+============================ */
+
+async function buscarPokemon(q){
   try {
+    let cache = getCache(q)
+    if(cache){
+      pintarPokemon(cache, "cache")
+      cargarEvoluciones(cache.id)
+      reproducirGrito(cache.cries?.latest)
+      return
+    }
 
-    /* ==========================
-       🔍 MODO: BUSCAR POKÉMON
-    ========================== */
-    if(modo === "pokemon"){
+    let res = await fetch(`https://pokeapi.co/api/v2/pokemon/${q}`)
 
-      let cache = getCache(q)
-      if(cache){
-        pintarPokemon(cache, "cache")
-        cargarEvoluciones(cache.id)
-        reproducirGrito(cache.cries?.latest)
-        return
-      }
+    if(!res.ok){
+      alert("❌ Pokémon no encontrado")
+      return
+    }
 
-      let res = await fetch(`https://pokeapi.co/api/v2/pokemon/${q}`)
+    let data = await res.json()
 
-      if(!res.ok){
-        alert("❌ Pokémon no encontrado")
-        return
-      }
+    setCache(q, data)
 
-      let data = await res.json()
-      setCache(q, data)
+    pintarPokemon(data, "api")
 
-      pintarPokemon(data, "api")
+    try {
       cargarEvoluciones(data.id)
-      reproducirGrito(data.cries?.latest)
-    }
+    } catch {}
 
-
-    /* ==========================
-       🔍 MODO: BUSCAR HABILIDAD
-    ========================== */
-    else if(modo === "habilidad"){
-
-      let res = await fetch(`https://pokeapi.co/api/v2/ability/${q}`)
-      if(!res.ok){
-        alert("❌ Habilidad no encontrada")
-        return
-      }
-
-      let data = await res.json()
-      pintarHabilidad(data)
-    }
+    reproducirGrito(data.cries?.latest)
 
   } catch (e){
-    alert("⚠️ Error temporal con la API. Intenta de nuevo.")
+    alert("⚠️ Error con la API")
     console.error(e)
   }
 }
 
 /* ============================
-   ✅ GRITO
+   SONIDO
 ============================ */
 
 function reproducirGrito(url){
-  if(url){
-    audio.pause()
-    audio.currentTime = 0
-    audio.src = url
-    audio.play().catch(()=>{})
-  }
+  if(!url) return
+  audio.pause()
+  audio.currentTime = 0
+
+  setTimeout(()=>{
+    audio.src = url + "?v=" + Math.random()
+    audio.play()
+  }, 50)
 }
 
 /* ============================
-   ✅ TARJETA POKÉMON
+   TARJETA POKÉMON
 ============================ */
 
 function pintarPokemon(p, origen){
-
   let habilidades = p.abilities.map(a=>`
     <span class="${a.is_hidden ? "habilidad-oculta" : ""}">
       ${a.ability.name}${a.is_hidden ? " (Oculta)" : ""}
@@ -118,16 +114,21 @@ function pintarPokemon(p, origen){
   let tipos = p.types.map(t=>`<div>${t.type.name}</div>`).join("")
 
   let stats = p.stats.map(s=>{
-    let pct = Math.min(s.base_stat, 100) // ← nunca supera 100
+    let porcentaje = Math.min((s.base_stat / 255) * 100, 100)
     return `
       <div class="stat">
         <div>${s.stat.name}</div>
         <div class="barra">
-          <div class="relleno" style="width:${pct}%"></div>
+          <div class="relleno" style="width:${porcentaje}%"></div>
         </div>
       </div>
     `
   }).join("")
+
+  let img =
+    p.sprites.front_default ||
+    p.sprites.other?.["official-artwork"]?.front_default ||
+    ""
 
   app.innerHTML = `
     <div class="card">
@@ -135,19 +136,15 @@ function pintarPokemon(p, origen){
       <div class="badge-origen">${origen.toUpperCase()}</div>
 
       <div class="sprite-box">
-        <img src="${p.sprites.front_default || p.sprites.other?.['official-artwork']?.front_default}">
+        <img src="${img}">
       </div>
 
       <div class="titulo">#${p.id} ${p.name.toUpperCase()}</div>
       <div class="linea"></div>
 
-      <!-- ⭐ TIPOS A LA IZQUIERDA -->
       <div class="tipos">${tipos}</div>
-
-      <!-- ⭐ NUEVO: TÍTULO HABILIDADES -->
       <h3 style="text-align:left; margin:10px 0 6px 0;">HABILIDADES</h3>
       <div class="habilidades">${habilidades}</div>
-
       ${stats}
 
       <div class="fav-btn"><button>❤️</button></div>
@@ -162,39 +159,99 @@ function pintarPokemon(p, origen){
 }
 
 /* ============================
-   ✅ TARJETA DE HABILIDAD
+  CLICK DIRECTO
 ============================ */
 
-function pintarHabilidad(h){
-
-  let list = h.pokemon.map(pk=>`
-    <div class="hab-poke" onclick="buscarDirecto('${pk.pokemon.name}')">
-      ${pk.pokemon.name}
-    </div>
-  `).join("")
-
-  app.innerHTML = `
-    <div class="card">
-      <h2>${h.name.toUpperCase()}</h2>
-
-      <div class="linea"></div>
-
-      <h3 style="text-align:left;">EFFECT</h3>
-      <p style="text-align:left;">
-        ${h.effect_entries.find(e=>e.language.name==="en")?.effect || "No effect text"}
-      </p>
-
-      <h3 style="margin-top:12px;">Pokémon with this ability</h3>
-
-      <div class="lista-habilidad" style="max-height:260px; overflow-y:auto;">
-        ${list}
-      </div>
-    </div>
-  `
+function buscarDirecto(nombre){
+  document.getElementById("q").value = nombre
+  document.getElementById("modo").value = "pokemon"
+  buscar()
 }
 
 /* ============================
-   ✅ EVOLUCIONES
+   CLICK DESDE HABILIDAD
+============================ */
+
+function buscarPokemonDesdeHabilidad(nombre){
+  document.getElementById("modo").value = "pokemon"  // cambia la pestaña
+  document.getElementById("q").value = nombre        // pone el nombre
+  buscar()                                           // ejecuta búsqueda
+}
+
+/* ============================
+   BUSCAR HABILIDAD
+============================ */
+
+async function buscarHabilidad(q){
+  try {
+    let res = await fetch(`https://pokeapi.co/api/v2/ability/${q}`)
+    if(!res.ok){
+      alert("❌ Habilidad no encontrada")
+      return
+    }
+
+    let ability = await res.json()
+
+    let effectText =
+      ability.effect_entries.find(e=>e.language.name==="en")?.effect
+      || "No description available."
+
+    let lista = ""
+
+    for(let entry of ability.pokemon){
+      let name = entry.pokemon.name
+      let isHidden = entry.is_hidden
+
+      let pokeRes = await fetch(entry.pokemon.url.replace("pokemon-species","pokemon"))
+      let poke = await pokeRes.json()
+
+      let img =
+        poke.sprites.front_default ||
+        poke.sprites.other?.["official-artwork"]?.front_default ||
+        ""
+
+      lista += `
+        <div class="hab-item" onclick="buscarPokemonDesdeHabilidad('${name}')">
+          <img src="${img}">
+          <div class="hab-name">
+            ${name.toUpperCase()} ${isHidden ? "<span class='hidden-tag'>(oculta)</span>" : ""}
+          </div>
+        </div>
+      `
+    }
+
+    app.innerHTML = `
+      <div class="card-ability">
+
+        <div class="ability-header">
+          <h1 class="ability-title">${ability.name.toUpperCase()}</h1>
+          <div class="ability-id">#${ability.id}</div>
+        </div>
+
+        <div class="ability-section">
+          <h3>Effect</h3>
+          <div class="ability-effect-box">${effectText}</div>
+        </div>
+
+        <div class="ability-section">
+          <h3>Pokémon with this ability (${ability.pokemon.length})</h3>
+
+          <div class="ability-list-box">
+            ${lista}
+          </div>
+        </div>
+
+      </div>
+    `
+
+  } catch(e){
+    alert("⚠️ Error con la API de habilidades")
+    console.error(e)
+  }
+}
+
+/* ============================
+   EVOLUCIONES
 ============================ */
 
 async function cargarEvoluciones(id){
@@ -228,7 +285,6 @@ async function cargarEvoluciones(id){
   let evoHTML = ""
 
   if(ramas.length === 0){
-
     rootHTML += `
       <div class="evo-root-box" onclick="buscarDirecto('${base}')">
         <img src="${baseData.sprites.front_default}">
@@ -238,7 +294,6 @@ async function cargarEvoluciones(id){
 
     for(let n of lineal){
       let p = await fetch(`https://pokeapi.co/api/v2/pokemon/${n}`).then(r=>r.json())
-
       rootHTML += `
         <div class="flecha">➜</div>
         <div class="evo" onclick="buscarDirecto('${n}')">
@@ -253,7 +308,6 @@ async function cargarEvoluciones(id){
   }
 
   else {
-
     document.getElementById("evo-root").innerHTML = `
       <div class="evo-root-box" onclick="buscarDirecto('${base}')">
         <img src="${baseData.sprites.front_default}">
@@ -264,7 +318,6 @@ async function cargarEvoluciones(id){
 
     for(let n of ramas){
       let p = await fetch(`https://pokeapi.co/api/v2/pokemon/${n}`).then(r=>r.json())
-
       evoHTML += `
         <div class="evo" onclick="buscarDirecto('${n}')">
           <img src="${p.sprites.front_default}">
@@ -275,14 +328,4 @@ async function cargarEvoluciones(id){
 
     document.getElementById("evos").innerHTML = evoHTML
   }
-}
-
-/* ============================
-   ✅ CLICK EN EVOLUCIÓN / HABILIDAD
-============================ */
-
-function buscarDirecto(n){
-  document.getElementById("q").value = n
-  document.getElementById("modo").value = "pokemon"
-  buscar()
 }
