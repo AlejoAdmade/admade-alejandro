@@ -1,11 +1,17 @@
 let app = document.getElementById("app")
 let audio = document.getElementById("sonido")
+
+// ✅ Cache de 3 minutos
 let cacheTiempo = 180000
 
 document.getElementById("b").onclick = buscar
 document.getElementById("tema").onclick = () => {
   document.body.classList.toggle("dark")
 }
+
+/* ============================
+   ✅ CACHE LOCAL
+============================ */
 
 function getCache(k){
   let d = localStorage.getItem(k)
@@ -16,30 +22,72 @@ function getCache(k){
 }
 
 function setCache(k, data){
-  localStorage.setItem(k, JSON.stringify({t:Date.now(), data}))
+  localStorage.setItem(k, JSON.stringify({
+    t: Date.now(),
+    data
+  }))
 }
+
+/* ============================
+   ✅ BUSCAR POKEMON
+   - trim()
+   - res.ok
+   - try/catch
+============================ */
 
 async function buscar(){
-  let q = document.getElementById("q").value.toLowerCase()
+  let q = document.getElementById("q").value.toLowerCase().trim()
   let modo = document.getElementById("modo").value
+
   if(!q) return
 
-  if(modo==="pokemon"){
-    let c = getCache(q)
-    if(c){
-      pintarPokemon(c, "cache")
-      cargarEvoluciones(c.id)
-      return
+  try {
+
+    if(modo === "pokemon"){
+
+      // ✅ Buscar en cache primero
+      let cache = getCache(q)
+      if(cache){
+        pintarPokemon(cache, "cache")
+        cargarEvoluciones(cache.id)
+        return
+      }
+
+      // ✅ Buscar en API con validación HTTP
+      let res = await fetch(`https://pokeapi.co/api/v2/pokemon/${q}`)
+
+      if(!res.ok){
+        alert("❌ Pokémon no encontrado")
+        return
+      }
+
+      let data = await res.json()
+
+      // ✅ Guardar cache
+      setCache(q, data)
+
+      pintarPokemon(data, "api")
+
+      // ✅ Evoluciones protegidas con try/catch
+      try {
+        cargarEvoluciones(data.id)
+      } catch (e){
+        console.warn("Error cargando evoluciones", e)
+      }
+
+      reproducirGrito(data.cries?.latest)
+
     }
 
-    let res = await fetch(`https://pokeapi.co/api/v2/pokemon/${q}`)
-    let data = await res.json()
-    setCache(q, data)
-    pintarPokemon(data, "api")
-    cargarEvoluciones(data.id)
-    reproducirGrito(data.cries.latest)
+  } catch (e){
+    alert("⚠️ Error temporal con la API. Espera unos segundos y vuelve a intentar.")
+    console.error("Error real:", e)
   }
 }
+
+/* ============================
+   ✅ GRITO
+============================ */
 
 function reproducirGrito(url){
   if(url){
@@ -48,10 +96,22 @@ function reproducirGrito(url){
   }
 }
 
+/* ============================
+   ✅ PINTAR TARJETA
+   - Fallback de imágenes incluido
+============================ */
+
 function pintarPokemon(p, origen){
+
+  let imagen =
+    p.sprites.front_default ||
+    p.sprites.other?.['official-artwork']?.front_default ||
+    p.sprites.other?.home?.front_default ||
+    ""
+
   let habilidades = p.abilities.map(a=>`
-    <span class="${a.is_hidden?"habilidad-oculta":""}">
-      ${a.ability.name}${a.is_hidden?" (Oculta)":""}
+    <span class="${a.is_hidden ? "habilidad-oculta" : ""}">
+      ${a.ability.name}${a.is_hidden ? " (Oculta)" : ""}
     </span>
   `).join("")
 
@@ -61,7 +121,7 @@ function pintarPokemon(p, origen){
     <div class="stat">
       <div>${s.stat.name}</div>
       <div class="barra">
-        <div class="relleno" style="width:${s.base_stat}%"></div>
+        <div class="relleno" style="width:${Math.min(s.base_stat, 100)}%"></div>
       </div>
     </div>
   `).join("")
@@ -72,7 +132,7 @@ function pintarPokemon(p, origen){
       <div class="badge-origen">${origen.toUpperCase()}</div>
 
       <div class="sprite-box">
-        <img src="${p.sprites.front_default}">
+        <img src="${imagen}">
       </div>
 
       <div class="titulo">#${p.id} ${p.name.toUpperCase()}</div>
@@ -93,83 +153,122 @@ function pintarPokemon(p, origen){
   `
 }
 
+/* ============================
+   ✅ EVOLUCIONES INTELIGENTES
+   - Lineales en 1 fila
+   - Ramificadas en grid
+============================ */
+
 async function cargarEvoluciones(id){
-  let s = await fetch(`https://pokeapi.co/api/v2/pokemon-species/${id}`).then(r=>r.json())
-  let e = await fetch(s.evolution_chain.url).then(r=>r.json())
 
-  let base = e.chain.species.name
-  let ramas = []
-  let lineal = []
+  try {
 
-  function recorrer(nodo){
-    if(!nodo) return
+    let s = await fetch(`https://pokeapi.co/api/v2/pokemon-species/${id}`).then(r=>r.json())
+    let e = await fetch(s.evolution_chain.url).then(r=>r.json())
 
-    if(nodo.evolves_to.length > 1){
-      for(let evo of nodo.evolves_to){
-        ramas.push(evo.species.name)
+    let base = e.chain.species.name
+    let ramas = []
+    let lineal = []
+
+    function recorrer(nodo){
+      if(!nodo) return
+
+      if(nodo.evolves_to.length > 1){
+        for(let evo of nodo.evolves_to){
+          ramas.push(evo.species.name)
+        }
       }
-    } else if(nodo.evolves_to.length === 1) {
-      let sig = nodo.evolves_to[0]
-      lineal.push(sig.species.name)
-      recorrer(sig)
+      else if(nodo.evolves_to.length === 1){
+        let sig = nodo.evolves_to[0]
+        lineal.push(sig.species.name)
+        recorrer(sig)
+      }
     }
-  }
 
-  recorrer(e.chain)
+    recorrer(e.chain)
 
-  let baseData = await fetch(`https://pokeapi.co/api/v2/pokemon/${base}`).then(r=>r.json())
+    let baseData = await fetch(`https://pokeapi.co/api/v2/pokemon/${base}`).then(r=>r.json())
 
-  let rootHTML = ""
-  let evoHTML = ""
+    let baseImg =
+      baseData.sprites.front_default ||
+      baseData.sprites.other?.['official-artwork']?.front_default ||
+      baseData.sprites.other?.home?.front_default ||
+      ""
 
-  /* ✅ CASO 1: EVOLUCIÓN LINEAL (UNA SOLA FILA) */
-  if(ramas.length === 0){
-    rootHTML += `
-      <div class="evo-root-box" onclick="buscarDirecto('${base}')">
-        <img src="${baseData.sprites.front_default}">
-        <div>${base}</div>
-      </div>
-    `
+    let rootHTML = ""
+    let evoHTML = ""
 
-    for(let n of lineal){
-      let p = await fetch(`https://pokeapi.co/api/v2/pokemon/${n}`).then(r=>r.json())
+    // ✅ CASO LINEAL
+    if(ramas.length === 0){
+
       rootHTML += `
+        <div class="evo-root-box" onclick="buscarDirecto('${base}')">
+          <img src="${baseImg}">
+          <div>${base}</div>
+        </div>
+      `
+
+      for(let n of lineal){
+        let p = await fetch(`https://pokeapi.co/api/v2/pokemon/${n}`).then(r=>r.json())
+
+        let evoImg =
+          p.sprites.front_default ||
+          p.sprites.other?.['official-artwork']?.front_default ||
+          p.sprites.other?.home?.front_default ||
+          ""
+
+        rootHTML += `
+          <div class="flecha">➜</div>
+          <div class="evo" onclick="buscarDirecto('${n}')">
+            <img src="${evoImg}">
+            <div>${n}</div>
+          </div>
+        `
+      }
+
+      document.getElementById("evo-root").innerHTML = rootHTML
+      document.getElementById("evos").innerHTML = ""
+    }
+
+    // ✅ CASO RAMIFICADO
+    else {
+
+      document.getElementById("evo-root").innerHTML = `
+        <div class="evo-root-box" onclick="buscarDirecto('${base}')">
+          <img src="${baseImg}">
+          <div>${base}</div>
+        </div>
         <div class="flecha">➜</div>
-        <div class="evo" onclick="buscarDirecto('${n}')">
-          <img src="${p.sprites.front_default}">
-          <div>${n}</div>
-        </div>
       `
+
+      for(let n of ramas){
+        let p = await fetch(`https://pokeapi.co/api/v2/pokemon/${n}`).then(r=>r.json())
+
+        let evoImg =
+          p.sprites.front_default ||
+          p.sprites.other?.['official-artwork']?.front_default ||
+          p.sprites.other?.home?.front_default ||
+          ""
+
+        evoHTML += `
+          <div class="evo" onclick="buscarDirecto('${n}')">
+            <img src="${evoImg}">
+            <div>${n}</div>
+          </div>
+        `
+      }
+
+      document.getElementById("evos").innerHTML = evoHTML
     }
 
-    document.getElementById("evo-root").innerHTML = rootHTML
-    document.getElementById("evos").innerHTML = ""
-  }
-
-  /* ✅ CASO 2: MÚLTIPLES EVOLUCIONES (EEVEE) */
-  else {
-    document.getElementById("evo-root").innerHTML = `
-      <div class="evo-root-box" onclick="buscarDirecto('${base}')">
-        <img src="${baseData.sprites.front_default}">
-        <div>${base}</div>
-      </div>
-      <div class="flecha">➜</div>
-    `
-
-    for(let n of ramas){
-      let p = await fetch(`https://pokeapi.co/api/v2/pokemon/${n}`).then(r=>r.json())
-      evoHTML += `
-        <div class="evo" onclick="buscarDirecto('${n}')">
-          <img src="${p.sprites.front_default}">
-          <div>${n}</div>
-        </div>
-      `
-    }
-
-    document.getElementById("evos").innerHTML = evoHTML
+  } catch (e){
+    console.warn("Error total cargando evoluciones:", e)
   }
 }
 
+/* ============================
+   ✅ CLICK EN EVOLUCIÓN
+============================ */
 
 function buscarDirecto(n){
   document.getElementById("q").value = n
