@@ -1,7 +1,7 @@
 let app = document.getElementById("app")
 let audio = document.getElementById("sonido")
 
-// Cache de 3 minutos
+
 let cacheTiempo = 180000
 
 document.getElementById("b").onclick = buscar
@@ -9,9 +9,7 @@ document.getElementById("tema").onclick = () => {
   document.body.classList.toggle("dark")
 }
 
-/* ============================
-   CACHE LOCAL
-============================ */
+
 
 function getCache(k){
   let d = localStorage.getItem(k)
@@ -25,9 +23,7 @@ function setCache(k, data){
   localStorage.setItem(k, JSON.stringify({ t: Date.now(), data }))
 }
 
-/* ============================
-   BUSQUEDA PRINCIPAL
-============================ */
+
 
 async function buscar(){
   let q = document.getElementById("q").value.toLowerCase().trim()
@@ -46,9 +42,7 @@ async function buscar(){
   }
 }
 
-/* ============================
-   BUSCAR POKÉMON
-============================ */
+
 
 async function buscarPokemon(q){
   try {
@@ -85,9 +79,6 @@ async function buscarPokemon(q){
   }
 }
 
-/* ============================
-   SONIDO
-============================ */
 
 function reproducirGrito(url){
   if(!url) return
@@ -100,9 +91,7 @@ function reproducirGrito(url){
   }, 50)
 }
 
-/* ============================
-   TARJETA POKÉMON
-============================ */
+
 
 function pintarPokemon(p, origen){
   let habilidades = p.abilities.map(a=>`
@@ -158,9 +147,7 @@ function pintarPokemon(p, origen){
   `
 }
 
-/* ============================
-  CLICK DIRECTO
-============================ */
+
 
 function buscarDirecto(nombre){
   document.getElementById("q").value = nombre
@@ -168,19 +155,15 @@ function buscarDirecto(nombre){
   buscar()
 }
 
-/* ============================
-   CLICK DESDE HABILIDAD
-============================ */
+
 
 function buscarPokemonDesdeHabilidad(nombre){
-  document.getElementById("modo").value = "pokemon"  // cambia la pestaña
-  document.getElementById("q").value = nombre        // pone el nombre
-  buscar()                                           // ejecuta búsqueda
+  document.getElementById("modo").value = "pokemon"  
+  document.getElementById("q").value = nombre        
+  buscar()                                           
 }
 
-/* ============================
-   BUSCAR HABILIDAD
-============================ */
+
 
 async function buscarHabilidad(q){
   try {
@@ -250,9 +233,7 @@ async function buscarHabilidad(q){
   }
 }
 
-/* ============================
-   EVOLUCIONES
-============================ */
+
 
 async function cargarEvoluciones(id){
   let s = await fetch(`https://pokeapi.co/api/v2/pokemon-species/${id}`).then(r=>r.json())

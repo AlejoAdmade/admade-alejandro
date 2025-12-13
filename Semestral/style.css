@@ -1,4 +1,4 @@
-/* ===== FONDO GENERAL ===== */
+
 body {
   margin: 0;
   font-family: 'Courier New', monospace;
@@ -17,7 +17,6 @@ body {
   color: white;
 }
 
-/* ===== POKEBOLA ===== */
 .pokebola-contenedor {
   position: fixed;
   top: 220px;
@@ -74,7 +73,6 @@ body {
   transform: translate(-50%, -50%);
 }
 
-/* ===== HEADER ===== */
 header {
   padding: 25px;
   position: relative;
@@ -91,7 +89,6 @@ header {
   font-size: 28px;
 }
 
-/* ===== MENU ===== */
 .menu button {
   margin: 6px;
   padding: 8px 18px;
@@ -107,7 +104,6 @@ header {
   box-shadow: 2px 2px 0 black;
 }
 
-/* ===== BUSCADOR ===== */
 .buscador select,
 .buscador input,
 .buscador button {
@@ -136,7 +132,6 @@ header {
   box-shadow: 2px 2px 0 black;
 }
 
-/* ===== TARJETA ===== */
 .card {
   background: white;
   border: 5px solid black;
@@ -167,7 +162,6 @@ header {
   font-weight: bold;
 }
 
-/* SPRITE */
 .sprite-box {
   border: 5px solid black;
   padding: 15px;
@@ -185,7 +179,6 @@ header {
   width: 140px;
 }
 
-/* TITULO */
 .titulo {
   font-size: 24px;
   font-weight: bold;
@@ -211,7 +204,7 @@ header {
   border: 3px solid black;
 }
 
-/* HABILIDADES */
+
 .habilidades span {
   display: inline-block;
   background: #9cff57;
@@ -224,7 +217,6 @@ header {
   background: #ffcc00 !important;
 }
 
-/* STATS */
 .stat {
   display: grid;
   grid-template-columns: 120px 1fr;
@@ -241,7 +233,6 @@ header {
   background: #5fdad0;
 }
 
-/* FAVORITO */
 .fav-btn button {
   margin-top: 12px;
   font-size: 28px;
@@ -250,13 +241,11 @@ header {
   cursor: pointer;
 }
 
-/* SEPARADOR */
 .separador {
   border-top: 4px dashed black;
   margin: 18px 0;
 }
 
-/* EVOLUCIONES */
 .evo-root, .evos-grid {
   display: flex;
   justify-content: center;
@@ -280,7 +269,6 @@ header {
   margin-top: 20px;
 }
 
-/* HABILIDADES RESULTADOS */
 .lista-habilidad {
   display: flex;
   flex-wrap: wrap;
@@ -301,9 +289,7 @@ header {
   transform: translate(2px,2px);
   box-shadow: 2px 2px 0 black;
 }
-/* ============================
-   TARJETA DE HABILIDADES
-============================ */
+
 
 .card-ability {
   background: white;
@@ -315,7 +301,6 @@ header {
   position: relative;
 }
 
-/* Título + ID */
 .ability-header {
   display: flex;
   justify-content: space-between;
@@ -336,7 +321,6 @@ header {
   font-size: 18px;
 }
 
-/* Secciones */
 .ability-section {
   text-align: left;
   margin-top: 18px;
@@ -349,13 +333,12 @@ header {
   font-size: 14px;
 }
 
-/* Lista scrollable */
 .ability-list-box {
   border: 4px solid black;
   background: #fafafa;
   padding: 12px;
 
-  height: 260px;     /* scroll */
+  height: 260px;     
   overflow-y: scroll;
 
   display: grid;
@@ -363,99 +346,6 @@ header {
   gap: 12px;
 }
 
-/* Tarjetita de cada Pokémon */
-.hab-item {
-  max-height: 110px;
-  background: #ffe066;
-  border: 3px solid black;
-  padding: 8px;
-  cursor: pointer;
-  box-shadow: 4px 4px 0 black;
-  text-align: center;
-}
-
-.hab-item:hover {
-  transform: translate(2px,2px);
-  box-shadow: 2px 2px 0 black;
-}
-
-.hab-item img {
-  width: 70px;
-}
-
-.hab-name {
-  font-size: 13px;
-  font-weight: bold;
-}
-
-.hidden-tag {
-  color: #ff6600;
-  font-weight: bold;
-  font-size: 12px;
-}
-/* ============================
-   TARJETA DE HABILIDADES
-============================ */
-
-.card-ability {
-  background: white;
-  border: 5px solid black;
-  width: 460px;
-  margin: 40px auto;
-  padding: 15px;
-  box-shadow: 8px 8px 0 black;
-  position: relative;
-}
-
-/* Título + ID */
-.ability-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-
-.ability-title {
-  margin: 0;
-  font-size: 26px;
-  font-weight: bold;
-}
-
-.ability-id {
-  background: #ffe066;
-  border: 4px solid black;
-  padding: 4px 10px;
-  font-weight: bold;
-  font-size: 18px;
-}
-
-/* Secciones */
-.ability-section {
-  text-align: left;
-  margin-top: 18px;
-}
-
-.ability-effect-box {
-  background: #dcdcdc;
-  border: 4px solid black;
-  padding: 12px;
-  font-size: 14px;
-}
-
-/* Lista scrollable */
-.ability-list-box {
-  border: 4px solid black;
-  background: #fafafa;
-  padding: 12px;
-
-  height: 260px;     /* scroll */
-  overflow-y: scroll;
-
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 12px;
-}
-
-/* Tarjetita de cada Pokémon */
 .hab-item {
   max-height: 110px;
   background: #ffe066;
@@ -486,9 +376,93 @@ header {
   font-size: 12px;
 }
 
-/* ============================
-   🌙 MODO OSCURO – TARJETAS
-============================ */
+
+.card-ability {
+  background: white;
+  border: 5px solid black;
+  width: 460px;
+  margin: 40px auto;
+  padding: 15px;
+  box-shadow: 8px 8px 0 black;
+  position: relative;
+}
+
+.ability-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.ability-title {
+  margin: 0;
+  font-size: 26px;
+  font-weight: bold;
+}
+
+.ability-id {
+  background: #ffe066;
+  border: 4px solid black;
+  padding: 4px 10px;
+  font-weight: bold;
+  font-size: 18px;
+}
+
+.ability-section {
+  text-align: left;
+  margin-top: 18px;
+}
+
+.ability-effect-box {
+  background: #dcdcdc;
+  border: 4px solid black;
+  padding: 12px;
+  font-size: 14px;
+}
+
+.ability-list-box {
+  border: 4px solid black;
+  background: #fafafa;
+  padding: 12px;
+
+  height: 260px;
+  overflow-y: scroll;
+
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+}
+
+.hab-item {
+  max-height: 110px;
+  background: #ffe066;
+  border: 3px solid black;
+  padding: 8px;
+  cursor: pointer;
+  box-shadow: 4px 4px 0 black;
+  text-align: center;
+}
+
+.hab-item:hover {
+  transform: translate(2px,2px);
+  box-shadow: 2px 2px 0 black;
+}
+
+.hab-item img {
+  width: 70px;
+}
+
+.hab-name {
+  font-size: 13px;
+  font-weight: bold;
+}
+
+.hidden-tag {
+  color: #ff6600;
+  font-weight: bold;
+  font-size: 12px;
+}
+
+
 .dark .card,
 .dark .card-ability {
   background: #1e1e1e !important;
