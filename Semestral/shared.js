@@ -8,6 +8,9 @@
 
         let pokemon1 = null;
         let pokemon2 = null;
+        let origen1 = null;
+        let origen2 = null;
+
 
         const htmlElements = {
             app: document.getElementById("app"),
@@ -119,39 +122,33 @@
 
         const cache = {
         key(k) {
-            return `PKF_CACHE_${k}`; // ✅ prefijo fijo (no choca con nada)
+            return `PKF_CACHE_${k}`;
         },
 
         get(k) {
             try {
-            // ✅ lee primero la key nueva
             const raw = window.localStorage?.getItem(this.key(k));
             if (raw) {
                 const parsed = JSON.parse(raw);
 
-                // formato nuevo esperado: { t, data }
                 if (parsed && typeof parsed === "object" && "t" in parsed && "data" in parsed) {
                 if (Date.now() - parsed.t > cacheTiempo) return null;
                 return parsed.data;
                 }
 
-                // por si quedara algo raro
                 return null;
             }
 
-            // ✅ fallback: intenta leer la key vieja (tu versión anterior guardaba directo por nombre)
             const legacyRaw = window.localStorage?.getItem(k);
             if (!legacyRaw) return null;
 
             const legacyParsed = JSON.parse(legacyRaw);
 
-            // si era formato {t,data}
             if (legacyParsed && typeof legacyParsed === "object" && "t" in legacyParsed && "data" in legacyParsed) {
                 if (Date.now() - legacyParsed.t > cacheTiempo) return null;
                 return legacyParsed.data;
             }
 
-            // si era el objeto pokemon directo (sin wrapper)
             if (legacyParsed && typeof legacyParsed === "object" && legacyParsed.id) {
                 return legacyParsed;
             }
@@ -410,71 +407,75 @@
 
             vsScreen() {
                 return `
-                    <div style="max-width: 1100px; margin: 40px auto; position: relative; text-align: center;">
-                        
-                        <div style="display: flex; justify-content: center; align-items: flex-start; gap: 40px; margin-bottom: 40px;">
-                            
-                            <div style="display: flex; filter: drop-shadow(4px 4px 0 black);">
-                                <input id="p1" placeholder="POKÉMON 1..." style="width: 200px; padding: 12px; border: 4px solid black; border-right: none; font-family: inherit; font-size: 14px; outline: none; margin-right: 10px;">
-                                <button onclick="PokemonApp.buscarParaVS(1)" style="padding: 12px 15px; background: #ff4d4d; border: 4px solid black; cursor: pointer; font-family: inherit; font-size: 14px; font-weight: bold; color: white; white-space: nowrap;">BUSCAR</button>
-                            </div>
+                    <div class="vs-container">
 
-                            <div style="padding: 8px 15px; font-weight: bold; font-size: 18px; color: #ff4d4d;">VS</div>
 
-                            <div style="display: flex; filter: drop-shadow(4px 4px 0 black);">
-                                <input id="p2" placeholder="POKÉMON 2..." style="width: 200px; padding: 12px; border: 4px solid black; border-right: none; font-family: inherit; font-size: 14px; outline: none; margin-right: 10px;">
-                                <button onclick="PokemonApp.buscarParaVS(2)" style="padding: 12px 15px; background: #ff4d4d; border: 4px solid black; cursor: pointer; font-family: inherit; font-size: 14px; font-weight: bold; color: white;">BUSCAR</button>
-                            </div>
+                    <div class="vs-panel">
+
+                        <div class="vs-inputs">
+                        <div class="vs-searchbox">
+                            <input id="p1" class="vs-input" placeholder="POKÉMON 1..." />
+                            <button class="vs-searchbtn" onclick="PokemonApp.buscarParaVS(1)">BUSCAR</button>
                         </div>
 
-                        <button id="batallar-btn" onclick="PokemonApp.iniciarBatalla()" style="padding: 12px 40px; background: transparent; border: 4px solid black; cursor: pointer; font-family: inherit; font-size: 18px; box-shadow: 5px 5px 0 black; margin-bottom: 30px; font-weight: bold; color: #aaa; text-transform: uppercase;">
-                            ⚔️ ¡BATALLAR!
+                        <div class="vs-mid">VS</div>
+
+                        <div class="vs-searchbox">
+                            <input id="p2" class="vs-input" placeholder="POKÉMON 2..." />
+                            <button class="vs-searchbtn" onclick="PokemonApp.buscarParaVS(2)">BUSCAR</button>
+                        </div>
+                        </div>
+
+                        <button id="batallar-btn" class="vs-batallar disabled" onclick="PokemonApp.iniciarBatalla()">
+                        ⚔️ ¡BATALLAR!
                         </button>
 
-                        <div style="display: flex; justify-content: center; align-items: flex-start; position: relative;">
-                            <div id="card-p1" style="width: 200px; height: 350px; border: 5px solid black; background: #eee; display: flex; align-items: center; justify-content: center; font-size: 10px; box-shadow: 5px 5px 0 black; color: #ccc; z-index: 1;">?</div>
-                            
-                            <div style="width: 80px; height: 300px; display: flex; flex-direction: column; align-items: center; justify-content: center; z-index: 2;">
-                                <div style="font-size: 28px; margin: 10px 0;">⚔️</div>
-                            </div>
-                            
-                            <div id="card-p2" style="width: 200px; height: 350px; border: 5px solid black; background: #eee; display: flex; align-items: center; justify-content: center; font-size: 10px; box-shadow: 5px 5px 0 black; color: #ccc; z-index: 1;">?</div>
+                        <div class="vs-cards">
+                        <div id="card-p1" class="vs-placeholder">?</div>
+                        <div class="vs-swords">⚔️</div>
+                        <div id="card-p2" class="vs-placeholder">?</div>
                         </div>
 
-                        <div style="width: 500px; margin: 0 auto; height: 200px; border: 5px solid black; background: white; display: flex; align-items: center; justify-content: center; font-size: 50px; box-shadow: 5px 5px 0 black; color: #ccc; z-index: 5; margin-top: 50px;">
-                            ⚔️
+                        <div class="vs-resultbox">
+                        <div class="vs-resulticon">⚔️</div>
                         </div>
 
                         <div id="resultado-batalla"></div>
+
+                    </div>
                     </div>
                 `;
-            },
+                },
 
-            vsCard(p) {
-                const tipos = p.types.map(t => `<div>${t.type.name}</div>`).join("");
-                const img = p.sprites.front_default || 
-                           p.sprites.other?.["official-artwork"]?.front_default || "";
-                const statsTotal = p.stats.reduce((sum, s) => sum + s.base_stat, 0);
+
+                vsCard(p, origen) {
+                const tipos = p.types
+                    .map(t => `<span class="vs-type">${t.type.name.toUpperCase()}</span>`)
+                    .join("");
+
+                const img =
+                    p.sprites.front_default ||
+                    p.sprites.other?.["official-artwork"]?.front_default ||
+                    "";
+
+                const badge = (origen || "api").toUpperCase();
 
                 return `
-                    <div class="card" style="width: 350px; margin: 0;">
-                        <div class="badge-data">⚔️ API</div>
-                        
-                        <div class="sprite-box">
-                            <img src="${img}">
-                        </div>
+                    <div class="vs-card">
+                    <div class="vs-badge">${badge}</div>
 
-                        <div class="titulo">#${p.id} ${p.name.toUpperCase()}</div>
-                        <div class="linea"></div>
+                    <div class="vs-sprite">
+                        <img src="${img}" alt="${p.name}">
+                    </div>
 
-                        <div class="tipos">${tipos}</div>
-                        
-                        <div style="margin-top: 15px; text-align: left;">
-                            <b>STATS TOTAL: ${statsTotal}</b>
-                        </div>
+                    <div class="vs-name">#${p.id} ${p.name.toUpperCase()}</div>
+
+                    <div class="vs-types">${tipos}</div>
                     </div>
                 `;
-            }
+                },
+
+
         };
 
         const api = {
@@ -586,12 +587,13 @@
             },
 
 
-            vsCard(p, containerId) {
+            vsCard(p, containerId, origen) {
                 const container = document.getElementById(containerId);
                 if (container) {
-                    container.innerHTML = templates.vsCard(p);
+                    container.innerHTML = templates.vsCard(p, origen);
                 }
             }
+
         };
 
         const evolution = {
@@ -665,8 +667,6 @@
             try {
                 const key = query.toLowerCase().trim();
 
-
-                // ✅ 2. Intentar CACHE
                 const cached = cache.get(key);
                 if (cached) {
                 state.currentPokemon = cached;
@@ -679,7 +679,6 @@
                 return;
                 }
 
-                // ✅ 3. API solo si NO hay cache
                 const data = await api.fetchPokemon(key);
                 cache.set(key, data);
 
@@ -781,25 +780,32 @@
                     if (!q) return;
 
                     let data = cache.get(q);
+                    let origen = "cache";
 
                     if (!data) {
-                        const res = await fetch(`${pokeApi}/pokemon/${q}`);
-                        if (!res.ok) {
-                            alert(`❌ Pokémon ${num} no encontrado`);
-                            return;
-                        }
-                        data = await res.json();
-                        cache.set(q, data);
+                    origen = "api";
+                    const res = await fetch(`${pokeApi}/pokemon/${q}`);
+                    if (!res.ok) {
+                        alert(`❌ Pokémon ${num} no encontrado`);
+                        return;
+                    }
+                    data = await res.json();
+                    cache.set(q, data);
                     }
 
+
                     if (num === 1) {
-                        pokemon1 = data;
-                        render.vsCard(data, "card-p1");
+                    pokemon1 = data;
+                    origen1 = origen;
+                    render.vsCard(data, "card-p1", origen);
                     } else {
-                        pokemon2 = data;
-                        render.vsCard(data, "card-p2");
+                    pokemon2 = data;
+                    origen2 = origen;
+                    render.vsCard(data, "card-p2", origen);
                     }
+
                     this.actualizarEstadoBoton();
+
 
                 } catch (e) {
                     alert("⚠️ Error buscando Pokémon");
@@ -812,8 +818,8 @@
 
                 if (pokemon1 && pokemon2) {
                     btn.classList.remove("disabled");
-                    btn.style.color = "black";
-                    btn.style.background = "#7cf0dc";
+                    btn.style.color = "white";
+                    btn.style.background = "#ff4d4d";
                 } else {
                     btn.classList.add("disabled");
                     btn.style.color = "#aaa";
@@ -822,14 +828,16 @@
                 },
 
 
-            iniciarBatalla() {
+                iniciarBatalla() {
                 if (!pokemon1 || !pokemon2) {
                     alert("⚠️ Debes buscar ambos Pokémon primero");
                     return;
                 }
 
-                const stats1 = pokemon1.stats.reduce((sum, s) => sum + s.base_stat, 0);
-                const stats2 = pokemon2.stats.reduce((sum, s) => sum + s.base_stat, 0);
+                const statsTotal = (p) => p.stats.reduce((sum, s) => sum + s.base_stat, 0);
+
+                const stats1 = statsTotal(pokemon1);
+                const stats2 = statsTotal(pokemon2);
 
                 const ventaja1 = this.calcularVentaja(pokemon1, pokemon2);
                 const ventaja2 = this.calcularVentaja(pokemon2, pokemon1);
@@ -837,52 +845,144 @@
                 const poder1 = stats1 * ventaja1;
                 const poder2 = stats2 * ventaja2;
 
-                let mensaje = "";
-                let colorGanador = "";
+                const ganador = poder1 === poder2 ? 0 : (poder1 > poder2 ? 1 : 2);
 
-                if (poder1 > poder2) {
-                    const ganador = pokemon1.name.toUpperCase();
-                    colorGanador = "#7cf0dc";
-                    mensaje = `¡${ganador} GANA! 🏆`;
-                } else if (poder2 > poder1) {
-                    const ganador = pokemon2.name.toUpperCase();
-                    colorGanador = "#7cf0dc";
-                    mensaje = `¡${ganador} GANA! 🏆`;
-                } else {
-                    mensaje = "¡EMPATE! ⚔️";
-                    colorGanador = "#ffe066";
-                }
+                const multText = (m) => {
+                    if (m === 0) return "no afecta";
+                    if (m < 1) return "es poco efectivo";
+                    if (m > 1) return "es súper efectivo";
+                    return "es efectivo";
+                };
 
-                const analisis = `
-                    <div style="margin-top: 40px;">
-                        <div style="background: ${colorGanador}; border: 5px solid black; padding: 20px; box-shadow: 8px 8px 0 black; margin-bottom: 20px;">
-                            <h2 style="font-size: 36px; margin: 0;">${mensaje}</h2>
+                const fmtMult = (m) => `x${Number(m).toFixed(2)}`;
+                const fmtPts  = (n) => `${Number(n).toFixed(1)} pts`;
+
+                const statLabel = (key) => ({
+                    hp: "HP",
+                    attack: "ATK",
+                    defense: "DEF",
+                    "special-attack": "SP.ATK",
+                    "special-defense": "SP.DEF",
+                    speed: "SPD",
+                }[key] || key.toUpperCase());
+
+                const getStat = (p, key) => p.stats.find(s => s.stat.name === key)?.base_stat ?? 0;
+
+                const statKeys = ["hp","attack","defense","special-attack","special-defense","speed"];
+
+                const statsRowsHTML = statKeys.map((k) => {
+                    const a = getStat(pokemon1, k);
+                    const b = getStat(pokemon2, k);
+                    const max = Math.max(a, b, 1);
+
+                    const wa = (a / max) * 100;
+                    const wb = (b / max) * 100;
+
+                    return `
+                    <div class="vs-stat-row">
+                        <div class="vs-stat-num left">${a}</div>
+
+                        <div class="vs-stat-bar">
+                        <div class="vs-stat-fill left" style="width:${wa}%"></div>
+                        <div class="vs-stat-fill right" style="width:${wb}%"></div>
+                        <div class="vs-stat-tag">${statLabel(k)}</div>
                         </div>
 
-                        <div style="background: white; border: 5px solid black; padding: 20px; box-shadow: 8px 8px 0 black; text-align: left;">
-                            <h3>📊 ANÁLISIS DE BATALLA</h3>
-                            <div style="margin: 10px 0;">
-                                <b>${pokemon1.name.toUpperCase()}</b><br>
-                                Stats totales: ${stats1}<br>
-                                Ventaja de tipo: ${ventaja1}x<br>
-                                Poder final: ${poder1.toFixed(2)}
-                            </div>
-                            <div style="height: 3px; background: black; margin: 15px 0;"></div>
-                            <div style="margin: 10px 0;">
-                                <b>${pokemon2.name.toUpperCase()}</b><br>
-                                Stats totales: ${stats2}<br>
-                                Ventaja de tipo: ${ventaja2}x<br>
-                                Poder final: ${poder2.toFixed(2)}
-                            </div>
+                        <div class="vs-stat-num right">${b}</div>
+                    </div>
+                    `;
+                }).join("");
+
+                const cardHTML = (p, pts, side) => {
+                    const tipos = p.types.map(t => t.type.name);
+                    const img = p.sprites.front_default || p.sprites.other?.["official-artwork"]?.front_default || "";
+
+                    const isWinner = (ganador === 1 && side === 1) || (ganador === 2 && side === 2);
+                    const isLoser  = (ganador !== 0) && !isWinner;
+
+                    return `
+                    <div class="vs-res-card ${isWinner ? "winner" : ""} ${isLoser ? "loser" : ""}">
+                        ${isWinner ? `<div class="vs-winner-badge">🏆 GANADOR</div>` : ``}
+
+                        <div class="vs-res-sprite">
+                        <img src="${img}" alt="${p.name}">
                         </div>
+
+                        <div class="vs-res-name">${p.name.toUpperCase()}</div>
+
+                        <div class="vs-res-types">
+                        ${tipos.map(t => `<span class="vs-chip">${t.toUpperCase()}</span>`).join("")}
+                        </div>
+
+                        <div class="vs-res-points">${fmtPts(pts)}</div>
+
+                        <button class="vs-heart" type="button" title="Favorito (solo visual)">🤍</button>
+                    </div>
+                    `;
+                };
+
+                const tituloGanador = ganador === 0
+                    ? "¡EMPATE! ⚔️"
+                    : `¡${(ganador === 1 ? pokemon1.name : pokemon2.name).toUpperCase()} GANA! 🏆`;
+
+                const html = `
+                    <div class="vs-result">
+                    <div class="vs-result-title">
+                        ⚔️ RESULTADO DE LA BATALLA ⚔️
+                    </div>
+
+                    <div class="vs-result-divider"></div>
+
+                    <div class="vs-result-top">
+                        ${cardHTML(pokemon1, poder1, 1)}
+                        <div class="vs-big-vs">VS</div>
+                        ${cardHTML(pokemon2, poder2, 2)}
+                    </div>
+
+                    <div class="vs-result-divider"></div>
+
+                    <div class="vs-section-title">
+                        📊 ANÁLISIS DE BATALLA
+                    </div>
+
+                    <div class="vs-box">
+                        <div class="vs-box-head">⚡ VENTAJAS DE TIPO</div>
+
+                        <div class="vs-adv red">
+                        <b>${pokemon1.name}</b> vs <b>${pokemon2.name}</b>: <b>${fmtMult(ventaja1)}</b><br>
+                        ${multText(ventaja1)} contra ${pokemon2.types.map(t => t.type.name).join("/")}
+                        </div>
+
+                        <div class="vs-adv green">
+                        <b>${pokemon2.name}</b> vs <b>${pokemon1.name}</b>: <b>${fmtMult(ventaja2)}</b><br>
+                        ${multText(ventaja2)} contra ${pokemon1.types.map(t => t.type.name).join("/")}
+                        </div>
+                    </div>
+
+                    <div class="vs-box">
+                        <div class="vs-box-head">📈 COMPARACIÓN DE STATS</div>
+                        <div class="vs-stats-wrap">
+                        ${statsRowsHTML}
+                        </div>
+                    </div>
+
+                    <div class="vs-box">
+                        <div class="vs-box-head">🧾 CÁLCULO DEL PUNTAJE</div>
+                        <div class="vs-calc">
+                        <div><b>Stats Base Total:</b> ${pokemon1.name}: ${stats1} | ${pokemon2.name}: ${stats2}</div>
+                        <div><b>Multiplicador de Tipo:</b> ${pokemon1.name}: ${fmtMult(ventaja1)} | ${pokemon2.name}: ${fmtMult(ventaja2)}</div>
+                        <div><b>Puntaje Final:</b> ${pokemon1.name}: ${Number(poder1).toFixed(1)} | ${pokemon2.name}: ${Number(poder2).toFixed(1)}</div>
+                        </div>
+                    </div>
                     </div>
                 `;
 
                 const resultadoEl = document.getElementById("resultado-batalla");
-                if (resultadoEl) {
-                    resultadoEl.innerHTML = analisis;
+                if (resultadoEl) resultadoEl.innerHTML = html;
+
+                resultadoEl?.scrollIntoView({ behavior: "smooth", block: "start" });
                 }
-            }
+
         };
 
         const handlers = {
@@ -970,7 +1070,6 @@
                 utils.setQuery(nombre);
                 utils.setModo("pokemon");
 
-                // 🔑 Si el Pokémon ya está cargado y es el mismo
                 if (
                     state.currentPokemon &&
                     state.currentPokemon.name === nombre.toLowerCase()
@@ -1013,9 +1112,14 @@
 
             toggleFavorito() {
                 if (!state.currentPokemon) return;
+                
                 storage.alternarFavorito(state.currentPokemon);
+                
                 render.pokemon(state.currentPokemon, state.currentOrigen);
+                
+                evolution.cargar(state.currentPokemon.id);
             },
+
 
 
             toggleFavoritoDesdeHistorial(id) {

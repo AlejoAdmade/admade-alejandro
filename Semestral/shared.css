@@ -100,6 +100,8 @@ header {
   cursor: pointer;
   box-shadow: 4px 4px 0 black;
   background: white;
+  font-family: inherit;
+  font-weight: bold;
 }
 
 .menu button:hover {
@@ -128,6 +130,7 @@ header {
   background: #ff6b6b;
   cursor: pointer;
   box-shadow: 4px 4px 0 black;
+  color: white
 }
 
 .buscador button:hover {
@@ -533,9 +536,6 @@ html.dark {
   color: white;
 }
 
-/* =========================
-   HISTORIAL
-========================= */
 
 .history-container {
   max-width: 720px;
@@ -557,9 +557,6 @@ html.dark {
   margin: 0;
 }
 
-/* =========================
-   BOTÓN LIMPIAR ABAJO
-========================= */
 
 .history-clear-bottom {
   display: block;
@@ -579,10 +576,6 @@ html.dark {
   box-shadow: 3px 3px 0 black;
 }
 
-
-/* =========================
-   ITEM
-========================= */
 
 .history-grid {
   display: flex;
@@ -680,9 +673,6 @@ html.dark {
   border-color: white;
 }
 
-/* =========================
-   FAVORITOS – BOTÓN GRANDE
-========================= */
 
 .favorite-delete {
   position: absolute;
@@ -716,9 +706,6 @@ html.dark {
   border-left-color: white;
 }
 
-/* =========================
-   VS – BOTÓN DESHABILITADO
-========================= */
 
 #batallar-btn.disabled {
   opacity: 0.35;
@@ -744,4 +731,417 @@ html.dark {
   background: white;
   text-align: center;
   padding: 15px;
+}
+
+.vs-container {
+  max-width: 1100px;
+  margin: 40px auto;
+  text-align: center;
+  font-family: inherit;
+}
+
+.vs-title {
+  display: inline-block;
+  background: #7cf0dc;
+  border: 6px solid black;
+  box-shadow: 10px 10px 0 black;
+  padding: 18px 60px;
+  font-size: 44px;
+  font-weight: 900;
+  letter-spacing: 2px;
+  transform: rotate(-2deg);
+  margin-bottom: 20px;
+}
+
+.vs-panel {
+  position: relative;
+  margin: 0 auto;
+}
+
+.vs-inputs {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 18px;
+  margin: 20px 0 18px 0;
+}
+
+.vs-searchbox {
+  display: flex;
+  align-items: stretch;
+  filter: drop-shadow(6px 6px 0 black);
+}
+
+.vs-input {
+  width: 360px;
+  padding: 14px 14px;
+  border: 5px solid black;
+  outline: none;
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
+.vs-searchbtn {
+  padding: 14px 18px;
+  border: 5px solid black;
+  background: #ff4d4d;
+  color: white;
+  font-weight: 900;
+  cursor: pointer;
+  font-family: inherit;
+  font-weight: bold;
+}
+
+.vs-mid {
+  font-size: 26px;
+  font-weight: 900;
+  color: #ff4d4d;
+  text-shadow: 2px 2px 0 black;
+}
+
+
+.vs-batallar {
+  display: inline-block;
+  margin: 18px auto 26px auto;
+  padding: 18px 70px;
+  border: 6px solid black;
+  box-shadow: 10px 10px 0 black;
+  font-size: 24px;
+  font-weight: 900;
+  cursor: pointer;
+  text-transform: uppercase;
+  transition: opacity .2s ease, transform .1s ease;
+}
+
+.vs-batallar:not(.disabled) {
+  background: #ff4d4d;
+  color: white;
+  font-family: inherit;
+  font-weight: bold;
+}
+
+.vs-batallar.disabled {
+  background: transparent;
+  color: #aaa;
+  opacity: .35;
+  cursor: not-allowed;
+}
+
+.vs-batallar:not(.disabled):active {
+  transform: translateY(2px);
+}
+
+
+.vs-cards {
+  display: flex;
+  justify-content: center;
+  align-items: flex-end;
+  gap: 40px;
+  margin-top: 10px;
+}
+
+.vs-placeholder {
+  width: 240px;
+  height: 340px;
+  border: 6px solid black;
+  box-shadow: 10px 10px 0 black;
+  background: #e6e6e6;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 64px;
+  font-weight: 900;
+  color: #999;
+}
+
+.vs-swords {
+  font-size: 34px;
+  align-self: center;
+
+}
+
+
+.vs-card {
+  width: 240px;
+  height: 340px;
+  border: 6px solid black;
+  box-shadow: 10px 10px 0 black;
+  background: white;
+  position: relative;
+  padding: 12px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+}
+
+.vs-badge {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  background: #7cf0dc;
+  border: 4px solid black;
+  padding: 4px 10px;
+  font-weight: 900;
+  font-size: 12px;
+}
+
+.vs-sprite img {
+  width: 90px;
+  height: 90px;
+  image-rendering: pixelated;
+  margin-top: 35px;
+}
+
+.vs-name {
+  margin-top: 10px;
+  font-weight: 900;
+  font-size: 16px;
+}
+
+.vs-types {
+  margin-top: 10px;
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.vs-type {
+  background: black;
+  color: white;
+  border: 3px solid black;
+  padding: 3px 10px;
+  font-size: 12px;
+  font-weight: 900;
+}
+
+
+.vs-resultbox {
+  width: 620px;
+  height: 200px;
+  margin: 40px auto 0 auto;
+  border: 6px solid black;
+  box-shadow: 10px 10px 0 black;
+  background: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.vs-resulticon {
+  font-size: 60px;
+  opacity: .55;
+}
+
+
+.vs-result{
+  width: 740px;
+  margin: 40px auto 0 auto;
+  background: white;
+  border: 5px solid black;
+  box-shadow: 8px 8px 0 black;
+  padding: 24px;
+}
+
+.vs-result-title{
+  text-align: center;
+  font-weight: 900;
+  letter-spacing: 2px;
+  font-size: 20px;
+}
+
+.vs-result-divider{
+  height: 3px;
+  background: black;
+  margin: 16px 0;
+  border-top: 3px dashed black;
+  border-bottom: 0;
+}
+
+.vs-result-top{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 18px;
+  padding: 10px 0;
+}
+
+.vs-big-vs{
+  font-weight: 900;
+  font-size: 34px;
+  color: #ff4d4d;
+  text-shadow: 2px 2px 0 black;
+}
+
+.vs-res-card{
+  width: 260px;
+  border: 4px solid black;
+  background: #efefef;
+  box-shadow: 6px 6px 0 black;
+  padding: 14px;
+  position: relative;
+  text-align: center;
+}
+
+.vs-res-card.winner{
+  background: #7CFF6B;
+}
+
+.vs-res-card.loser{
+  background: #e6e6e6;
+  opacity: 0.9;
+}
+
+.vs-winner-badge{
+  position: absolute;
+  top: -14px;
+  right: 14px;
+  background: #ffe066;
+  border: 4px solid black;
+  padding: 6px 12px;
+  font-weight: 900;
+  font-size: 12px;
+  box-shadow: 4px 4px 0 black;
+}
+
+.vs-res-sprite img{
+  width: 80px;
+  height: 80px;
+  image-rendering: pixelated;
+}
+
+.vs-res-name{
+  font-weight: 900;
+  margin-top: 6px;
+}
+
+.vs-res-types{
+  margin-top: 8px;
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.vs-chip{
+  display: inline-block;
+  padding: 4px 8px;
+  border: 3px solid black;
+  background: black;
+  color: white;
+  font-weight: 900;
+  font-size: 11px;
+}
+
+.vs-res-points{
+  margin-top: 10px;
+  font-weight: 900;
+  font-size: 22px;
+  color: #ff4d4d;
+  text-shadow: 1px 1px 0 black;
+}
+
+.vs-section-title{
+  text-align: center;
+  font-weight: 900;
+  letter-spacing: 2px;
+  margin: 10px 0 16px 0;
+}
+
+.vs-box{
+  border: 4px solid black;
+  background: #f1f1f1;
+  padding: 14px;
+  margin-top: 14px;
+}
+
+.vs-box-head{
+  font-weight: 900;
+  margin-bottom: 10px;
+  border-bottom: 3px solid black;
+  padding-bottom: 8px;
+}
+
+.vs-adv{
+  border: 3px solid black;
+  padding: 10px;
+  margin-top: 10px;
+  font-weight: 700;
+}
+
+.vs-adv.red{
+  background: #ff4d4d;
+  color: white;
+}
+
+.vs-adv.green{
+  background: #7CFF6B;
+  color: #0a0a0a;
+}
+
+.vs-stats-wrap{
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.vs-stat-row{
+  display: grid;
+  grid-template-columns: 38px 1fr 38px;
+  align-items: center;
+  gap: 10px;
+}
+
+.vs-stat-num{
+  font-weight: 900;
+  text-align: center;
+}
+
+.vs-stat-bar{
+  position: relative;
+  height: 20px;
+  border: 3px solid black;
+  background: #ddd;
+  overflow: hidden;
+}
+
+.vs-stat-fill{
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  opacity: .9;
+}
+
+.vs-stat-fill.left{
+  left: 0;
+  background: #55e7ff; /* celeste */
+}
+
+.vs-stat-fill.right{
+  right: 0;
+  background: #7CFF6B; /* verde */
+}
+
+.vs-stat-tag{
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 900;
+  font-size: 12px;
+  background: rgba(255,255,255,0.45);
+  border-left: 3px solid black;
+  border-right: 3px solid black;
+  width: fit-content;
+  margin: 0 auto;
+  padding: 0 8px;
+}
+
+.vs-calc{
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  font-weight: 700;
 }
