@@ -278,3 +278,11 @@ R: Si, de 2 y 3. Nadie individual, nadie en grupo de 4+.
 
 
 Capturas de Pantalla
+<img width="1840" height="1195" alt="Buscador" src="https://github.com/user-attachments/assets/6a65594e-efac-4d7f-95a6-a2909eea470b" />
+<img width="1840" height="1195" alt="Histórico" src="https://github.com/user-attachments/assets/024df7a2-b71f-4ab0-b024-41c268361cfd" />
+<img width="1840" height="1195" alt="Versus" src="https://github.com/user-attachments/assets/ce909d4b-e357-4f9d-a888-873e1da4c60e" />
+<img width="1840" height="1195" alt="Favoritos" src="https://github.com/user-attachments/assets/37907599-095c-4809-9f64-f2a07a9bafef" />
+<img width="1840" height="1195" alt="Habilidades" src="https://github.com/user-attachments/assets/a691c6d6-4f9f-47e6-b6f0-4a3d86ab6e36" />
+<img width="1840" height="1195" alt="Modo Nocturno" src="https://github.com/user-attachments/assets/73c18d93-a32d-4c1d-9163-5c98eab27b81" />
+<img width="1840" height="1195" alt="Modo Nocturno 2" src="https://github.com/user-attachments/assets/02e5770c-6e9b-46ef-b690-6a7ec0448dff" />
+
